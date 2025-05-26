@@ -3,12 +3,15 @@ import { getAllProducts } from "../components/products/getAllProducts";
 import { createProduct } from "../components/products/createProduct";
 import { updateProduct } from "../components/products/updateProducts";
 import { deleteProduct } from "../components/products/deleteProduct";
+import multer from 'multer';
+
+const upload = multer({ dest: 'uploads/' }); // Configuración básica si no usas la de index.ts
 
 const router = Router();
 
-router.get('/data/user', getAllProducts);
-router.post('/data/user', createProduct);
-router.put('/data/update/user/:id', updateProduct);
-router.delete('data/delete/:id', deleteProduct);
+router.get('/data', getAllProducts);
+router.post('/data', upload.single('image'), createProduct); // Añadir middleware para subir archivos
+router.put('/data/:id', updateProduct);
+router.delete('/data/:id', deleteProduct);
 
 export default router;

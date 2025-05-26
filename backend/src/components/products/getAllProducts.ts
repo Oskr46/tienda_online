@@ -3,17 +3,18 @@ import pool from "../../conn"
 
 export const getAllProducts = async(req: Request, res: Response) =>{
     try{
-        const query = `SELECT * FROM "public"."user"`
+        const query = `SELECT * FROM "public"."products"`
         const result = await pool.query(query)
-
         if(result.rows.length === 0){
-            res.json({success: false, message: `No se encontraron coincidencias`})
+            res.json("No se Encontraron Coincidencias");
         }
         else{
-            res.json({success: true,message: `Se han encontrado los usuarios: `, data: result.rows})
+            res.json(result.rows)
         }
+        
+
     }
     catch(err){
-        res.status(500).json("Error en el servidor")
+        res.status(500).json({error:"Error en el servidor"})
     }
 };
