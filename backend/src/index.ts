@@ -43,7 +43,7 @@ const upload = multer({
 const App = Express();
 const Puerto = 3002;
 // Configuración de Express para servir archivos estáticos
-App.use('/public/uploads', Express.static(path.join(__dirname, '../public/uploads')));
+App.use('/uploads', Express.static(path.join(__dirname, '../uploads')));
 
 
 App.use(cors());

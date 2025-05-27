@@ -24,7 +24,7 @@ export const createProduct = async (req: Request, res: Response) => {
         }
 
         // Construir URL de la imagen
-        const imageUrl = `../../public/uploads/${finalFilename}`;
+        const imageUrl = `/uploads/${finalFilename}`;
 
         // Validar datos numéricos
         const priceNumber = parseFloat(price);

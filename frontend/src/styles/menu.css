@@ -1,0 +1,41 @@
+.header{
+  position:fixed;
+  top:0;
+  left: 0;
+  height: 100px;
+  width: 100vw;
+  display: flex;
+  flex-direction: row;
+  background-color: rgb(68, 66, 49);
+  z-index: 53;
+  overflow: hidden;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0px 0px 10px 10px;
+}
+
+.head_button{
+  border: none;
+  border-radius: 15px;
+  color: white;
+  background-color: rgb(40, 44, 7);
+  margin: 10px 20px 10px 20px;
+  padding: 10px;
+  cursor: pointer;
+  transition: all 250ms ease;
+  outline: none;
+}
+
+.head_button:hover{
+  translate: 0px -3px;
+  box-shadow: 1px 1px 10px 5px yellowgreen;
+}
+
+.header a{
+  margin: 0px 40px 0px 0px;
+  text-decoration: none;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: white;
+}
+
+

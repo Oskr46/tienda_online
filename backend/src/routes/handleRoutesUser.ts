@@ -10,7 +10,7 @@ const router = Router();
 
 router.get('/data', getAllUsers);
 router.post('/data', createUser);
-router.post('/data', logUser);
+router.post('/data/login', logUser);
 router.get('/data/:username', verifyUser);
 router.put('/data/:username', updateUser);
 router.delete('/data/:username', deleteUser);

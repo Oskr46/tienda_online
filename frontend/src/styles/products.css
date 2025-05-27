@@ -1,0 +1,17 @@
+.producto{
+    display: flex;
+    flex-direction: row;
+}
+
+.contenedor{
+    border: 2px solid white;
+    margin: 20px;
+    cursor: pointer;
+    transition: all 250ms ease;
+    border-radius: 10px;
+}
+
+.contenedor:hover{
+    translate: 0px -5px;
+    box-shadow: 1px 1px 10px 5px yellowgreen;
+}
