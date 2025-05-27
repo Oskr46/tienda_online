@@ -4,7 +4,7 @@ import Menu from "./components/menu.tsx";
 import Inicio from "./components/inicio.tsx";
 import VistaProdGeneral from "./components/VistaProdGeneral.tsx";
 import Contactos from "./components/contactos.tsx";
-import Empleados from "./components/login_module.tsx";
+import Empleados from "./components/employees/login_module.tsx";
 type Page = ('Inicio' | 'Productos' | 'Contactos' | 'Empleados');
 
   interface Product{
@@ -15,15 +15,7 @@ type Page = ('Inicio' | 'Productos' | 'Contactos' | 'Empleados');
     minStock: number;
     stockAmount: number;
     urlImg: string;
-  }
-
-  interface userData{
-  idUser:number;
-  fullNameUser:string;
-  userName:string;
-  passwordUser:string;
-  typeUser:number;
-};
+}
 
   const App: React.FC = () => {
     const [paginaActual, setPaginaActual] = useState<Page>('Inicio');

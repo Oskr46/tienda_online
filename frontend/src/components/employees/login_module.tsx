@@ -1,6 +1,9 @@
 import { useState } from "react";
 import axios from "axios";
 import "../styles/login.css"
+import AdminPanel from "./adminPanel";
+import GerentePanel from "./GerentePanel";
+import AnalistaPanel from "./AnalistaPanel";
 
 enum UserType {
   Administrador = 0,
@@ -50,8 +53,8 @@ function App() {
 
       if(respuesta.data.success) {
         setClave('');
+        setMensaje('');
         setUserName('');
-        setMensaje('Se ha encontrado un usuario con los siguientes datos');
         setInfo(respuesta.data.data);
       } else {
         setClave('');
@@ -74,27 +77,15 @@ function App() {
     switch(info.typeUser) {
       case UserType.Administrador:
         return (
-          <div>
-            <h3>Panel de Administrador</h3>
-            <p>Acceso completo al sistema</p>
-            {/* Contenido específico para admin */}
-          </div>
+          <AdminPanel/>
         );
       case UserType.Gerente:
         return (
-          <div>
-            <h3>Panel de Gerente</h3>
-            <p>Gestión de equipos y reportes</p>
-            {/* Contenido específico para gerente */}
-          </div>
+          <GerentePanel/>
         );
       case UserType.Analista:
         return (
-          <div>
-            <h3>Panel de Analista</h3>
-            <p>Análisis de datos y reportes</p>
-            {/* Contenido específico para analista */}
-          </div>
+          <AnalistaPanel/>
         );
       default:
         return <p>Rol no reconocido</p>;
@@ -132,12 +123,11 @@ function App() {
       ) : (
         // Vista después del login exitoso
         <div>
-          <h2>Bienvenido, {info.fullNameUser}</h2>
-          <p>Tipo de Usuario: {getUserRoleName(info.typeUser)}</p>
+        <h2>{getUserRoleName(info.typeUser)}: <u>{info.fullNameUser}</u></h2>
           
           {renderUserDashboard()}
           
-          <button className = "button" onClick={() => setInfo(null)}>
+          <button className = "button_close" onClick={() => (setInfo(null))}>
             Cerrar Sesión
           </button>
         </div>

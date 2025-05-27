@@ -26,7 +26,7 @@ input:focus::placeholder{
 }
 
 .button{
-    margin: 20px;
+    margin: 5px;
     padding: 15px;
     color: white;
     border-radius: 10px;
@@ -38,4 +38,35 @@ input:focus::placeholder{
 .button:hover{
     border: 1px solid rgb(0, 81, 255);
     box-shadow: 1px 1px 10px 1px rgb(0, 81, 255);
+}
+
+.button_finish{
+    margin: 20px;
+    padding: 15px;
+    color: white;
+    border-radius: 10px;
+    background-color: rgb(14, 15, 17);
+    border: 2px solid rgb(145, 1, 1);
+    transition: all 150ms ease;
+}
+
+.button_finish:hover{
+    border: 1px solid rgb(255, 0, 0);
+    box-shadow: 1px 1px 10px 5px rgb(255, 0, 0);
+}
+
+.button_close{
+    margin: 20px;
+    margin-top: 40px;
+    padding: 15px;
+    color: white;
+    border-radius: 10px;
+    background-color: rgb(14, 15, 17);
+    border: 2px solid rgb(145, 1, 1);
+    transition: all 150ms ease;
+}
+
+.button_close:hover{
+    border: 1px solid rgb(255, 0, 0);
+    box-shadow: 1px 1px 10px 5px rgb(255, 0, 0);
 }

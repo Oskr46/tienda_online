@@ -1,10 +1,7 @@
 import React, { useState } from "react";
+import '../styles/login.css'
 
-interface Props {
-    refresh: () => void;
-}
-
-const AddProduct: React.FC<Props> = ({ refresh }) => {
+const AddProduct: React.FC = () => {
     const [name, setName] = useState('');
     const [price, setPrice] = useState('');
     const [maxStockProduct, setMaxStockProduct] = useState('');
@@ -65,8 +62,6 @@ const AddProduct: React.FC<Props> = ({ refresh }) => {
             setStockProduct('');
             setImageFile(null);
             setImagePreview('');
-            
-            refresh();
         } catch (error) {
             console.error('Error:', error);
             alert('Ocurrió un error al guardar el producto');
@@ -76,10 +71,10 @@ const AddProduct: React.FC<Props> = ({ refresh }) => {
     };
 
     return (
-        <div className="addProduct">
+        <div>
             <form onSubmit={handleSubmit}>
-                <h2 className="title_add">Agregar Producto</h2>
-                <div className="inputs">
+                <h2>Agregar Producto</h2>
+                <div>
                     <label>Nombre del Producto</label>
                     <input 
                         className="input" 
@@ -154,8 +149,8 @@ const AddProduct: React.FC<Props> = ({ refresh }) => {
                         </div>
                     )}
 
-                    <button type="submit" disabled={isSubmitting}>
-                        {isSubmitting ? 'Enviando...' : 'Finalizar'}
+                    <button className="button" type="submit" disabled={isSubmitting}>
+                        {isSubmitting ? 'Enviando...' : 'Agregar Producto'}
                     </button>
                 </div>
             </form>
