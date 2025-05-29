@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import '../styles/login.css'
+import '../../styles/login.css'
 
 const AddProduct: React.FC = () => {
     const [name, setName] = useState('');
@@ -29,46 +29,52 @@ const AddProduct: React.FC = () => {
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setIsSubmitting(true);
+    e.preventDefault();
+    setIsSubmitting(true);
 
-        try {
-            const formData = new FormData();
-            formData.append('name', name);
-            formData.append('price', price);
-            formData.append('maxStockProduct', maxStockProduct);
-            formData.append('minStockProduct', minStockProduct);
-            formData.append('stockProduct', stockProduct);
-            
-            if (imageFile) {
-                formData.append('image', imageFile);
-            }
-
-            const response = await fetch(`http://localhost:3002/api/product/data`, {
-                method: 'POST',
-                body: formData
-                // No establezcas el header 'Content-Type', el navegador lo hará automáticamente con el boundary correcto
-            });
-
-            if (!response.ok) {
-                throw new Error('Error al guardar el producto');
-            }
-
-            // Resetear formulario
-            setName('');
-            setPrice('');
-            setMinStockProduct('');
-            setMaxStockProduct('');
-            setStockProduct('');
-            setImageFile(null);
-            setImagePreview('');
-        } catch (error) {
-            console.error('Error:', error);
-            alert('Ocurrió un error al guardar el producto');
-        } finally {
-            setIsSubmitting(false);
+    try {
+        const formData = new FormData();
+        formData.append('name', name);
+        formData.append('price', price);
+        formData.append('maxStockProduct', maxStockProduct);
+        formData.append('minStockProduct', minStockProduct);
+        formData.append('stockProduct', stockProduct);
+        
+        if (imageFile) {
+            formData.append('image', imageFile);
         }
-    };
+
+        const response = await fetch(`http://localhost:3002/api/product/data`, {
+            method: 'POST',
+            body: formData
+            // No establezcas el header 'Content-Type', el navegador lo hará automáticamente con el boundary correcto
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || 'Error al guardar el producto');
+        }
+
+        const result = await response.json();
+        console.log('Producto creado:', result);
+
+        // Resetear formulario
+        setName('');
+        setPrice('');
+        setMinStockProduct('');
+        setMaxStockProduct('');
+        setStockProduct('');
+        setImageFile(null);
+        setImagePreview('');
+        
+        alert('Producto creado exitosamente!');
+    } catch (error) {
+        console.error('Error:', error);
+        alert(error.message || 'Ocurrió un error al guardar el producto');
+    } finally {
+        setIsSubmitting(false);
+    }
+};
 
     return (
         <div>

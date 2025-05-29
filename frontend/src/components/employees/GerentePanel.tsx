@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import '../styles/login.css'
-import AddProduct from './addProduct';
+import '../../styles/login.css'
+import AddProduct from '../products/addProduct';
 
 function GerentePanel(){
   const [vistaAddProd, setVistaAddProd] = useState(false);
@@ -32,7 +32,7 @@ function GerentePanel(){
              {!modalState && <h2>Panel de Gerente</h2>}
             <div className="options">
               <h2>Elija una de las siguientes opciones:</h2>
-              {!modalState && !vistaAddProd && <button className="button" onClick={abrirVistaAdd}>Gestionar Inventario de Producto</button>}
+              {!modalState && <button className="button">Gestionar Inventario de Producto</button>}
               {!modalState && !vistaAddProd && <button className="button" onClick={abrirVistaAdd}>Agregar Producto</button>}
               {!modalState && !vistaProd && <button className="button" onClick={abrirVistaProd}>Ver Productos</button>}
               {!modalState && <button className="button">Reporte de Productos</button>}

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import '../styles/login.css'
+import '../../styles/login.css'
 
 function AnalistaPanel(){
   const [modalState, setModalState] = useState(false);

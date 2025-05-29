@@ -4,41 +4,54 @@ import path from 'path';
 import fs from 'fs';
 
 export const createProduct = async (req: Request, res: Response) => {
+    // Verificar que el middleware de multer procesó el archivo
+    if (!req.file) {
+        return res.status(400).json({ error: 'No se subió ningún archivo de imagen' });
+    }
+
+    // Los campos del formulario vienen en req.body
     const { name, price, maxStockProduct, minStockProduct, stockProduct } = req.body;
-    const file = req.file;
+
+    // Validar que todos los campos requeridos están presentes
+    if (!name || !price || !maxStockProduct || !minStockProduct || !stockProduct) {
+        // Eliminar archivo subido si la validación falla
+        fs.unlinkSync(req.file.path);
+        return res.status(400).json({ error: 'Todos los campos son requeridos' });
+    }
 
     try {
-        // Validar que se subió un archivo
-        if (!file) {
-            return res.status(400).json({ error: 'No se subió ningún archivo de imagen' });
-        }
-
-        // Verificar y corregir extensión del archivo
-        let finalFilename = file.filename;
-        if (!path.extname(file.filename)) {
-            const fileExt = path.extname(file.originalname) || '.jpg';
-            finalFilename = `${file.filename}${fileExt}`;
-            const newPath = path.join(path.dirname(file.path), finalFilename);
+        let finalFilename = req.file.filename;
+        
+        // Corregir extensión si es necesario
+        if (!path.extname(req.file.filename)) {
+            const fileExt = path.extname(req.file.originalname) || '.jpg';
+            finalFilename = `${req.file.filename}${fileExt}`;
+            const newPath = path.join(path.dirname(req.file.path), finalFilename);
             
-            fs.renameSync(file.path, newPath);
+            fs.renameSync(req.file.path, newPath);
         }
 
-        // Construir URL de la imagen
         const imageUrl = `/uploads/${finalFilename}`;
 
-        // Validar datos numéricos
+        // Convertir y validar datos numéricos
         const priceNumber = parseFloat(price);
         const maxStock = parseInt(maxStockProduct);
         const minStock = parseInt(minStockProduct);
         const currentStock = parseInt(stockProduct);
 
         if (isNaN(priceNumber) || isNaN(maxStock) || isNaN(minStock) || isNaN(currentStock)) {
-            // Eliminar archivo subido si la validación falla
-            fs.unlinkSync(path.join(path.dirname(file.path), finalFilename));
+            fs.unlinkSync(path.join(path.dirname(req.file.path), finalFilename));
             return res.status(400).json({ error: 'Datos numéricos inválidos' });
         }
 
-        // Insertar en la base de datos
+        // Validar que el stock actual esté entre mínimo y máximo
+        if (currentStock < minStock || currentStock > maxStock) {
+            fs.unlinkSync(path.join(path.dirname(req.file.path), finalFilename));
+            return res.status(400).json({ 
+                error: `El stock actual debe estar entre ${minStock} y ${maxStock}` 
+            });
+        }
+
         const query = `
             INSERT INTO public.products (
                 "nameProduct", 
@@ -60,7 +73,7 @@ export const createProduct = async (req: Request, res: Response) => {
             imageUrl
         ]);
 
-        res.json({
+        res.status(201).json({
             success: true,
             product: result.rows[0],
             imageUrl: imageUrl
@@ -70,9 +83,9 @@ export const createProduct = async (req: Request, res: Response) => {
         console.error('Error al crear producto:', err);
         
         // Eliminar archivo subido si ocurre un error
-        if (file) {
+        if (req.file) {
             try {
-                const filePath = path.join(file.destination, file.filename);
+                const filePath = path.join(req.file.destination, req.file.filename);
                 if (fs.existsSync(filePath)) {
                     fs.unlinkSync(filePath);
                 }

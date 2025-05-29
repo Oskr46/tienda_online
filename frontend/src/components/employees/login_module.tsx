@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import "../styles/login.css"
+import "../../styles/login.css"
 import AdminPanel from "./adminPanel";
 import GerentePanel from "./GerentePanel";
 import AnalistaPanel from "./AnalistaPanel";
