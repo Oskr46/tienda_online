@@ -1,132 +1,529 @@
-.input{
+:root {
+  --primary: #4a6fa5;
+  --secondary: #166088;
+  --accent: #4fc3f7;
+  --dark: #0a192f;
+  --light: #f8f9fa;
+  --success: #4CAF50;
+  --warning: #FFC107;
+  --danger: #F44336;
+  --gray: #6c757d;
+}
+
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: var(--dark);
+  padding: 20px;
+}
+
+.login-form {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 15px;
+  padding: 2.5rem;
+  width: 100%;
+  max-width: 450px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+}
+
+.login-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.login-header h2 {
+  font-size: 2rem;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+}
+
+.login-subtitle {
+  color: var(--light-gray);
+  font-size: 1rem;
+}
+
+.login-message {
+  background-color: rgba(244, 67, 54, 0.2);
+  color: var(--danger);
+  padding: 0.8rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--light);
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.form-group input {
+  width: 92%;
+  padding: 0.8rem 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.2);
+  color: var(--light);
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(79, 195, 247, 0.2);
+}
+
+.form-group input::placeholder {
+  color: var(--gray);
+}
+
+.login-button {
+  width: 100%;
+  padding: 1rem;
+  background-color: var(--accent);
+  color: var(--dark);
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.login-button:hover {
+  background-color: #3aa8e8;
+  transform: translateY(-2px);
+}
+
+.login-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.spinner {
+  width: 18px;
+  height: 18px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: var(--dark);
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.user-dashboard {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 15px;
+  padding: 2rem;
+  width: 100%;
+  max-width: 900px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.user-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.user-role {
+  color: var(--accent);
+  display: block;
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+
+.user-name {
+  color: var(--light);
+  font-size: 1.4rem;
+  font-weight: 500;
+}
+
+.logout-button {
+  display: block;
+  margin: 2rem auto 0;
+  padding: 0.8rem 1.5rem;
+  background-color: rgba(244, 67, 54, 0.1);
+  color: var(--danger);
+  border: 1px solid var(--danger);
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.logout-button:hover {
+  background-color: rgba(244, 67, 54, 0.2);
+  transform: translateY(-2px);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .login-form {
+    padding: 1.5rem;
+  }
+  
+  .login-header h2 {
+    font-size: 1.6rem;
+  }
+  
+  .user-role {
+    font-size: 1.4rem;
+  }
+  
+  .user-name {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .login-container {
     padding: 15px;
-    outline: none;
-    border-radius: 15px;
-    margin: 10px;
-    border: none;
-    color: white;
-    font-weight: 600;
-    background-color: rgb(14, 15, 17);
-    border: 1px solid rgb(6, 6, 7);
-    transition: all 250ms ease;
+  }
+  
+  .login-form {
+    padding: 1.2rem;
+  }
+  
+  .login-header h2 {
+    font-size: 1.4rem;
+  }
 }
 
-.input:hover{
-    border: 1px solid rgb(0, 81, 255);
-    box-shadow: 1px 1px 10px 1px rgb(0, 81, 255);
+/* Estilos para los paneles de administración */
+.admin-panel {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 15px;
+  padding: 2rem;
+  width: 100%;
+  max-width: 800px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  margin: 2rem auto;
 }
 
-.input:focus{
-    border: 1px solid rgb(0, 81, 255);
-    box-shadow: 1px 1px 10px 1px rgb(0, 81, 255);
+.panel-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-input:focus::placeholder{
-    color: transparent
+.panel-header h2 {
+  font-size: 1.8rem;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
 }
 
-.button{
-    margin: 5px;
-    padding: 15px;
-    color: white;
-    border-radius: 10px;
-    background-color: rgb(14, 15, 17);
-    border: 1px solid rgb(6, 6, 7);
-    transition: all 150ms ease;
+.panel-subtitle {
+  color: var(--light-gray);
+  font-size: 1rem;
 }
 
-.button:hover{
-    border: 1px solid rgb(0, 81, 255);
-    box-shadow: 1px 1px 10px 1px rgb(0, 81, 255);
+.panel-options {
+  text-align: center;
 }
 
-.button_finish{
-    margin: 20px;
-    padding: 15px;
-    color: white;
-    border-radius: 10px;
-    background-color: rgb(14, 15, 17);
-    border: 2px solid rgb(145, 1, 1);
-    transition: all 150ms ease;
+.panel-options h3 {
+  color: var(--light);
+  margin-bottom: 1.5rem;
+  font-size: 1.2rem;
 }
 
-.button_finish:hover{
-    border: 1px solid rgb(255, 0, 0);
-    box-shadow: 1px 1px 10px 5px rgb(255, 0, 0);
+.options-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+  margin-top: 1.5rem;
 }
 
-.button_close{
-    margin: 20px;
-    margin-top: 40px;
-    padding: 15px;
-    color: white;
-    border-radius: 10px;
-    background-color: rgb(14, 15, 17);
-    border: 2px solid rgb(145, 1, 1);
-    transition: all 150ms ease;
+.panel-button {
+  width: 100%;
+  padding: 1.2rem;
+  background: rgba(79, 195, 247, 0.1);
+  color: var(--accent);
+  border: 1px solid rgba(79, 195, 247, 0.3);
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.button_close:hover{
-    border: 1px solid rgb(255, 0, 0);
-    box-shadow: 1px 1px 10px 5px rgb(255, 0, 0);
+.panel-button:hover {
+  background: rgba(79, 195, 247, 0.2);
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(79, 195, 247, 0.2);
 }
 
-.pdf-download-button {
-    margin: 5px;
-    padding: 15px;
-    color: white;
-    border-radius: 15px;
-    background-color: rgb(14, 15, 17);
-    border: 1px solid rgb(6, 6, 7);
-    transition: all 250ms ease;
-    font-weight: 600;
+.panel-view {
+  margin-top: 2rem;
+}
+
+.view-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.view-header h3 {
+  color: var(--light);
+  font-size: 1.3rem;
+}
+
+.panel-close-button {
+  padding: 0.7rem 1.2rem;
+  background: rgba(244, 67, 54, 0.1);
+  color: var(--danger);
+  border: 1px solid rgba(244, 67, 54, 0.3);
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.panel-close-button:hover {
+  background: rgba(244, 67, 54, 0.2);
+  transform: translateY(-2px);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .admin-panel {
+    padding: 1.5rem;
+  }
+  
+  .panel-header h2 {
+    font-size: 1.5rem;
+  }
+  
+  .options-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-panel {
+    padding: 1.2rem;
+  }
+  
+  .view-header {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+  
+  .panel-close-button {
+    width: 100%;
+  }
+}
+
+/* Estilos para el formulario de agregar producto */
+.form-container {
     display: flex;
+    justify-content: center;
     align-items: center;
-    gap: 8px;
+    width: 100%;
+    padding: 20px;
+}
+
+.login-form {
+    width: 100%;
+    max-width: 500px;
+}
+
+.image-preview {
+    margin: 1.5rem 0;
+    text-align: center;
+}
+
+.preview-image {
+    max-width: 100%;
+    max-height: 300px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Ajustes para inputs de tipo file */
+input[type="file"] {
+    padding: 0.5rem;
+}
+
+input[type="file"]::-webkit-file-upload-button {
+    padding: 0.5rem 1rem;
+    background: rgba(79, 195, 247, 0.1);
+    color: var(--accent);
+    border: 1px solid rgba(79, 195, 247, 0.3);
+    border-radius: 4px;
     cursor: pointer;
-    outline: none;
+    transition: all 0.3s ease;
 }
-        
-.pdf-download-button:hover {
-    border: 1px solid rgb(0, 81, 255);
-    box-shadow: 1px 1px 10px 1px rgb(0, 81, 255);
+
+input[type="file"]::-webkit-file-upload-button:hover {
+    background: rgba(79, 195, 247, 0.2);
 }
-        
-.pdf-download-button:disabled {
-    opacity: 0.7;
-    cursor: wait;
+
+/* Responsive */
+@media (max-width: 768px) {
+    .login-form {
+        padding: 1.5rem;
+    }
+    
+    .preview-image {
+        max-height: 250px;
+    }
 }
-        
-.pdf-loading {
-    border: 1px solid rgb(0, 81, 255);
-    box-shadow: 1px 1px 15px 2px rgba(0, 81, 255, 0.5);
+
+@media (max-width: 480px) {
+    .login-form {
+        padding: 1.2rem;
+    }
+    
+    .preview-image {
+        max-height: 200px;
+    }
 }
-        
-.pdf-error {
-    border: 1px solid rgb(255, 0, 0);
-    box-shadow: 1px 1px 15px 2px rgba(255, 0, 0, 0.5);
+
+/* Estilos específicos para el formulario de añadir usuario */
+.adduser-form {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 15px;
+  padding: 2.5rem;
+  width: 100%;
+  max-width: 500px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  margin: 2rem auto;
 }
-        
-.pdf-icon {
-    font-size: 16px;
+
+.adduser-header {
+  text-align: center;
+  margin-bottom: 2rem;
 }
-        
-.pdf-spinner {
-    display: inline-block;
-    width: 16px;
-    height: 16px;
-    border: 2px solid rgba(255,255,255,0.3);
-    border-radius: 50%;
-    border-top-color: #fff;
-    animation: spin 1s ease-in-out infinite;
+
+.adduser-header h2 {
+  font-size: 1.8rem;
+  color: var(--accent);
+  margin-bottom: 1rem;
 }
-        
-.pdf-error-message {
-    color: #ff6b6b;
-    font-size: 12px;
-    margin-left: 5px;
+
+.success-message {
+  background-color: rgba(76, 175, 80, 0.2);
+  color: var(--success);
+  padding: 0.8rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  font-size: 0.9rem;
 }
-        
-        @keyframes spin {
-          to { transform: rotate(360deg); }
-        }
+
+.button-group {
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.button {
+  width: 100%;
+  padding: 1rem;
+  background-color: var(--accent);
+  color: var(--dark);
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.button:hover {
+  background-color: #3aa8e8;
+  transform: translateY(-2px);
+}
+
+.button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Estilos para el select */
+.form-group select {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.2);
+  color: var(--light);
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%236c757d'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 1em;
+}
+
+.form-group select:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(79, 195, 247, 0.2);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .adduser-form {
+    padding: 1.5rem;
+  }
+  
+  .adduser-header h2 {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .adduser-form {
+    padding: 1.2rem;
+  }
+  
+  .adduser-header h2 {
+    font-size: 1.3rem;
+  }
+  
+  .button {
+    padding: 0.8rem;
+    font-size: 0.9rem;
+  }
+}

@@ -1,41 +1,96 @@
-.header{
-  position:fixed;
-  top:0;
-  left: 0;
-  height: 100px;
-  width: 100vw;
-  display: flex;
-  flex-direction: row;
-  background-color: rgb(68, 66, 49);
-  z-index: 53;
-  overflow: hidden;
-  justify-content: center;
-  align-items: center;
-  border-radius: 0px 0px 10px 10px;
+/* Estructura principal del menú */
+.menu-nav {
+    display: flex;
+    justify-content: flex-end;
+    width: auto;
+    height: 100%;
 }
 
-.head_button{
-  border: none;
-  border-radius: 15px;
-  color: white;
-  background-color: rgb(40, 44, 7);
-  margin: 10px 20px 10px 20px;
-  padding: 10px;
-  cursor: pointer;
-  transition: all 250ms ease;
-  outline: none;
+.menu-list {
+    display: flex; /* Esto es crucial para disposición horizontal */
+    flex-direction: row; /* Asegura disposición en fila */
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    align-items: center;
+    gap: 0.5rem;
 }
 
-.head_button:hover{
-  translate: 0px -3px;
-  box-shadow: 1px 1px 10px 5px yellowgreen;
+.menu-item {
+    height: 100%;
+    display: flex;
+    align-items: center;
 }
 
-.header a{
-  margin: 0px 40px 0px 0px;
-  text-decoration: none;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  color: white;
+/* Botones del menú */
+.menu-button {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding: 0 1rem;
+    border: none;
+    background: transparent;
+    color: white;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-width: auto;
+    gap: 0.25rem;
 }
 
+.menu-button:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
 
+.menu-button.active {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.menu-button.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: var(--accent);
+}
+
+/* Iconos y texto */
+.menu-icon {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+    filter: brightness(0) invert(1);
+}
+
+.menu-text {
+    font-size: 0.9rem;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+/* Media Queries para responsividad */
+@media (max-width: 768px) {
+    .menu-button {
+        padding: 0 0.75rem;
+    }
+    
+    .menu-text {
+        display: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .menu-button {
+        padding: 0 0.5rem;
+    }
+    
+    .menu-icon {
+        width: 18px;
+        height: 18px;
+    }
+}

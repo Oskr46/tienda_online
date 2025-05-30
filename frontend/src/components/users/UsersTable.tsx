@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import EditUser from './editUser';
 import DeleteUser from './deleteUser';
 import { PDFDownloadLink, Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
+import '../../styles/productTable.css'; // Reutilizando el CSS existente
 
 interface User {
   idUser: number;
@@ -10,7 +11,7 @@ interface User {
   typeUser: number;
 }
 
-// Estilos optimizados para PDF de usuarios
+// Estilos optimizados para PDF de usuarios (se mantienen igual)
 const pdfStyles = StyleSheet.create({
   page: {
     padding: 30,
@@ -136,14 +137,12 @@ const UserTable: React.FC = () => {
       
       const data = await response.json();
       
-      // Aseguramos que usersData sea siempre un array
       let usersData = [];
       if (Array.isArray(data)) {
         usersData = data;
       } else if (data.data && Array.isArray(data.data)) {
         usersData = data.data;
       } else if (data && typeof data === 'object' && !Array.isArray(data)) {
-        // Si es un objeto único, lo convertimos a array
         usersData = [data];
       }
       
@@ -165,73 +164,61 @@ const UserTable: React.FC = () => {
   };
 
   if (loading) {
-    return <div style={{ padding: 20, textAlign: 'center', color: '#ffffff' }}>Cargando usuarios...</div>;
+    return <div className="loading-state">Cargando usuarios...</div>;
   }
 
   if (error) {
-    return <div style={{ padding: 20, textAlign: 'center', color: '#ff6b6b' }}>Error: {error}</div>;
+    return <div className="error-state">Error: {error}</div>;
   }
 
   if (!users || users.length === 0) {
-    return <div style={{ padding: 20, textAlign: 'center', color: '#a0a0a0' }}>No hay usuarios registrados en la base de datos</div>;
+    return <div className="empty-state">No hay usuarios registrados en la base de datos</div>;
   }
 
   return (
-    <div style={{ padding: 20 }}>
-      <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 20 }}>
+    <div className="product-table-container">
+      <div className="product-table-header">
+        <h2 className="product-table-title">Lista de Usuarios</h2>
         <PDFDownloadLink
           document={<UsersPDFDocument users={users} />}
           fileName={`reporte_usuarios_${new Date().toISOString().slice(0, 10)}.pdf`}
         >
           {({ loading }) => (
-            <button 
-              style={{
-                padding: '12px 20px',
-                backgroundColor: '#1a1a1a',
-                color: '#ffffff',
-                border: '1px solid #333333',
-                borderRadius: '6px',
-                fontWeight: '600',
-                fontSize: '14px',
-                cursor: 'pointer',
-                transition: 'all 0.3s ease',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px'
-              }}
-              disabled={loading}
-            >
-              {loading ? 'Generando PDF...' : 'Descargar Reporte'}
+            <button className="pdf-download-btn" disabled={loading}>
+              {loading ? (
+                <>
+                  <span className="spinner"></span>
+                  Generando PDF...
+                </>
+              ) : 'Descargar Reporte'}
             </button>
           )}
         </PDFDownloadLink>
       </div>
       
-      <table style={{ 
-        width: '100%', 
-        borderCollapse: 'collapse',
-        border: '1px solid #333333'
-      }}>
+      <table className="products-table">
         <thead>
-          <tr style={{ backgroundColor: '#1a1a1a' }}>
-            <th style={{ padding: 12, textAlign: 'left', borderBottom: '1px solid #333333', color: '#4d9eff' }}>Nombre</th>
-            <th style={{ padding: 12, textAlign: 'left', borderBottom: '1px solid #333333', color: '#4d9eff' }}>Usuario</th>
-            <th style={{ padding: 12, textAlign: 'left', borderBottom: '1px solid #333333', color: '#4d9eff' }}>Tipo</th>
-            <th style={{ padding: 12, textAlign: 'left', borderBottom: '1px solid #333333', color: '#4d9eff' }}>Acciones</th>
+          <tr>
+            <th>Nombre Completo</th>
+            <th>Usuario</th>
+            <th>Tipo</th>
+            <th>Acciones</th>
           </tr>
         </thead>
         <tbody>
           {users.map((user) => (
-            <tr key={user.idUser} style={{ borderBottom: '1px solid #333333' }}>
-              <td style={{ padding: 12, color: '#ffffff' }}>{user.fullNameUser}</td>
-              <td style={{ padding: 12, color: '#ffffff' }}>{user.userName}</td>
-              <td style={{ padding: 12, color: '#ffffff' }}>
+            <tr key={user.idUser}>
+              <td>{user.fullNameUser}</td>
+              <td>{user.userName}</td>
+              <td>
                 {user.typeUser === 0 ? 'Administrador' : 
                  user.typeUser === 1 ? 'Gerente' : 'Analista'}
               </td>
-              <td style={{ padding: 12, display: 'flex', gap: 8 }}>
-                <EditUser user={user} refresh={refreshUsers} />
-                <DeleteUser idUser={user.idUser} refresh={refreshUsers} />
+              <td>
+                <div className="actions-container">
+                  <EditUser user={user} refresh={refreshUsers} />
+                  <DeleteUser idUser={user.idUser} refresh={refreshUsers} />
+                </div>
               </td>
             </tr>
           ))}

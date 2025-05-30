@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import '../../styles/login.css'
+import '../../styles/login.css';
 
 const AddUser: React.FC = () => {
     const [fullNameUser, setFullNameUser] = useState('');
@@ -23,7 +23,6 @@ const AddUser: React.FC = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         
-        // Validación básica
         if (!fullNameUser || !userName || !password || !typeUser) {
             setError('Todos los campos son obligatorios');
             return;
@@ -34,7 +33,6 @@ const AddUser: React.FC = () => {
         setSuccess('');
 
         try {
-            // 1. Verificar si el usuario ya existe
             const userExists = await checkUserExists(userName);
             
             if (userExists) {
@@ -43,7 +41,6 @@ const AddUser: React.FC = () => {
                 return;
             }
 
-            // 2. Registrar el nuevo usuario
             const response = await fetch(`http://localhost:3002/api/user/data`, {
                 method: 'POST',
                 headers: {
@@ -64,7 +61,6 @@ const AddUser: React.FC = () => {
             }
 
             if (data.success) {
-                // Resetear formulario
                 setFullNameUser('');
                 setUserName('');
                 setPassword('');
@@ -82,10 +78,15 @@ const AddUser: React.FC = () => {
     };
 
     return (
-        <div className="form-container">
-            <form onSubmit={handleSubmit}>
-                <h2>Registrar Usuario</h2>
+    
+            <form className="adduser-form" onSubmit={handleSubmit}>
+                <div className="adduser-header">
+                    <h2>Registrar Usuario</h2>
+                </div>
+                
                 {success && <div className="success-message">{success}</div>}
+                {error && <div className="login-message">{error}</div>}
+                
                 <div className="form-group">
                     <label>Nombre Completo</label>
                     <input 
@@ -139,12 +140,15 @@ const AddUser: React.FC = () => {
                 
                 <div className="button-group">
                     <button className="button" type="submit" disabled={isSubmitting}>
-                        {isSubmitting ? 'Registrando...' : 'Registrar Usuario'}
+                        {isSubmitting ? (
+                            <>
+                                <span className="spinner"></span>
+                                Registrando...
+                            </>
+                        ) : 'Registrar Usuario'}
                     </button>
-                    {error && <div className="error-message">{error}</div>}
                 </div>
             </form>
-        </div>
     );
 };
 

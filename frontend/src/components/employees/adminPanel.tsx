@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import '../../styles/login.css'
+import '../../styles/login.css';
 import AddProduct from '../products/addProduct';
 import ProductTable from '../products/editProductTable';
 import UserTable from '../users/UsersTable';
@@ -7,107 +7,77 @@ import ProductAmountTable from '../products/editAmountProdTable';
 import AddUser from '../users/addUser';
 import Bandeja from './bandeja';
 
+function AdminPanel() {
+  const [currentView, setCurrentView] = useState<string | null>(null);
 
-function AdminPanel(){
-  const [vistaAddProd, setVistaAddProd] = useState(false);
-  const [vistaProd, setVistaProd] = useState(false);
-  const [EditAmount, setEditAmount] = useState(false);
-  const [addUser, setAddUser] = useState(false);
-  const [vistaUser, setVistaUser] = useState(false);
-  const [bandeja, setBandeja] = useState(false);
-  const [modalState, setModalState] = useState(false);
+  const views = {
+    inventory: 'Gestionar Inventario',
+    addProduct: 'Agregar Producto',
+    viewProducts: 'Ver Productos',
+    addUser: 'Agregar Usuario',
+    viewUsers: 'Ver Usuarios',
+    inbox: 'Bandeja de Entrada'
+  };
 
-      const abrirVistaAdd =() =>{
-          setVistaAddProd(true);
-          setModalState(true);
-      }
-    
-    const abrirVistaProd =() =>{
-          setVistaProd(true);
-          setModalState(true);
-      }
+  const renderView = () => {
+    switch(currentView) {
+      case views.inventory: return <ProductAmountTable />;
+      case views.addProduct: return <AddProduct />;
+      case views.viewProducts: return <ProductTable />;
+      case views.addUser: return <AddUser />;
+      case views.viewUsers: return <UserTable />;
+      case views.inbox: return <Bandeja />;
+      default: return null;
+    }
+  };
 
-      const abrirEditAmount =() =>{
-          setEditAmount(true);
-          setModalState(true);
-      }
-    
-      const abrirAddUser =() =>{
-          setAddUser(true);
-          setModalState(true);
-      }
-    
-      const abrirVistaUser =() =>{
-          setVistaUser(true);
-          setModalState(true);
-      }
-    
+  return (
+    <div className="admin-panel">
+      <div className="panel-header">
+        <h2>Panel de Administrador</h2>
+        <p className="panel-subtitle">Gestión completa del sistema</p>
+      </div>
 
-    const abrirBandeja =() =>{
-          setBandeja(true);
-          setModalState(true);
-      }
-    
-      const cerrarBandeja =() =>{
-          setBandeja(false);
-          setModalState(false);
-      }
-
-
-      const cerrarVistaUser =() =>{
-          setVistaUser(false);
-          setModalState(false);
-      }
-
-
-      const cerrarAddUser =() =>{
-          setAddUser(false);
-          setModalState(false);
-      }
-
-      const cerrarVistaAdd =() =>{
-          setVistaAddProd(false);
-          setModalState(false);
-      }
-    
-        const cerrarVistaProd =() =>{
-          setVistaProd(false);
-          setModalState(false);
-      }
-
-      const cerrarEditAmount =() =>{
-          setEditAmount(false);
-          setModalState(false);
-      }
-    return(
-        <>
-            <div>
-                {!modalState && <h2>Panel de Administrador</h2>}
-                <div className="options">
-                {!modalState && <h2>Elija una de las siguientes opciones:</h2>}
-                {!modalState && !EditAmount && <button className="button" onClick={abrirEditAmount}>Gestionar Inventario de Producto</button>}
-                {!modalState && !vistaAddProd && <button className="button" onClick={abrirVistaAdd}>Agregar Producto</button>}
-                {!modalState && !vistaProd && <button className="button" onClick={abrirVistaProd}>Ver Productos</button>}
-                {!modalState && !addUser && <button className="button" onClick={abrirAddUser}>Agregar Usuario</button>}
-                {!modalState && !vistaUser && <button className="button" onClick={abrirVistaUser}>Ver Usuarios</button>}
-                {!modalState && !bandeja && <button className="button" onClick={abrirBandeja}>Bandeja de Entrada</button>}
-            </div>
-            {modalState && vistaAddProd && <AddProduct/>}
-            {modalState && addUser && <AddUser/>}
-            {modalState && vistaProd && <ProductTable/>}
-            {modalState && EditAmount && <ProductAmountTable/>}
-            {modalState && vistaUser && <UserTable/>}
-            {modalState && bandeja && <Bandeja/>}
-
-            {modalState && vistaUser && <button className="button_finish" onClick={cerrarVistaUser}>Cerrar Ver Usuarios</button>}
-            {modalState && vistaAddProd && <button className="button_finish" onClick={cerrarVistaAdd}>Cerrar Vista de Agregado</button>}
-            {modalState && vistaProd && <button className="button_finish" onClick={cerrarVistaProd}>Cerrar Vista de Productos</button>}
-            {modalState && EditAmount && <button className="button_finish" onClick={cerrarEditAmount}>Cerrar Edicion de Stock</button>}
-            {modalState && addUser && <button className="button_finish" onClick={cerrarAddUser}>Cerrar Agregar Usuario</button>}
-            {modalState && bandeja && <button className="button_finish" onClick={cerrarBandeja}>Cerrar Bandeja de Comentarios</button>}
-
+      {!currentView ? (
+        <div className="panel-options">
+          <h3>Elija una opción:</h3>
+          <div className="options-grid">
+            <button className="panel-button" onClick={() => setCurrentView(views.inventory)}>
+              Gestionar Inventario
+            </button>
+            <button className="panel-button" onClick={() => setCurrentView(views.addProduct)}>
+              Agregar Producto
+            </button>
+            <button className="panel-button" onClick={() => setCurrentView(views.viewProducts)}>
+              Ver Productos
+            </button>
+            <button className="panel-button" onClick={() => setCurrentView(views.addUser)}>
+              Agregar Usuario
+            </button>
+            <button className="panel-button" onClick={() => setCurrentView(views.viewUsers)}>
+              Ver Usuarios
+            </button>
+            <button className="panel-button" onClick={() => setCurrentView(views.inbox)}>
+              Bandeja de Entrada
+            </button>
           </div>
-        </>
-    )
+        </div>
+      ) : (
+        <div className="panel-view">
+          <div className="view-header">
+            <h3>{currentView}</h3>
+            <button 
+              className="panel-close-button" 
+              onClick={() => setCurrentView(null)}
+            >
+              Volver al menú
+            </button>
+          </div>
+          {renderView()}
+        </div>
+      )}
+    </div>
+  );
 }
-export default AdminPanel
+
+export default AdminPanel;

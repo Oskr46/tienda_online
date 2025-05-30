@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import "../../styles/login.css"
+import "../../styles/login.css";
 import AdminPanel from "./adminPanel";
 import GerentePanel from "./GerentePanel";
 import AnalistaPanel from "./AnalistaPanel";
@@ -18,7 +18,7 @@ interface UserData {
   typeUser: number;
 };
 
-function App() {
+function LoginModule() {
   const [info, setInfo] = useState<UserData | null>(null);
   const [userName, setUserName] = useState('');
   const [clave, setClave] = useState('');
@@ -27,14 +27,10 @@ function App() {
 
   const getUserRoleName = (typeUser: number): string => {
     switch(typeUser) {
-      case UserType.Administrador:
-        return "Administrador";
-      case UserType.Gerente:
-        return "Gerente";
-      case UserType.Analista:
-        return "Analista";
-      default:
-        return "Rol desconocido";
+      case UserType.Administrador: return "Administrador";
+      case UserType.Gerente: return "Gerente";
+      case UserType.Analista: return "Analista";
+      default: return "Rol desconocido";
     }
   };
 
@@ -59,7 +55,7 @@ function App() {
       } else {
         setClave('');
         setUserName('');
-        setMensaje("Credenciales Invalidas.");
+        setMensaje("Credenciales inválidas");
         setInfo(null);
       }
     } catch (err) {
@@ -70,64 +66,80 @@ function App() {
     }
   };
 
-  // Determina qué vista mostrar según el tipo de usuario
   const renderUserDashboard = () => {
     if (!info) return null;
 
     switch(info.typeUser) {
-      case UserType.Administrador:
-        return (
-          <AdminPanel/>
-        );
-      case UserType.Gerente:
-        return (
-          <GerentePanel/>
-        );
-      case UserType.Analista:
-        return (
-          <AnalistaPanel/>
-        );
-      default:
-        return <p>Rol no reconocido</p>;
+      case UserType.Administrador: return <AdminPanel/>;
+      case UserType.Gerente: return <GerentePanel/>;
+      case UserType.Analista: return <AnalistaPanel/>;
+      default: return <p>Rol no reconocido</p>;
     }
   };
 
   return (
-    <div>
+    <div className="login-container">
       {!info ? (
-        // Vista de login cuando no hay usuario autenticado
-        <div>
-          <h2>Inicio de Sesión para Empleados</h2>
-          {mensaje && <p>{mensaje}</p>}
-          <div>
-            <input 
-              className="input"
+        <div className="login-form">
+          <div className="login-header">
+            <h2>Inicio de Sesión</h2>
+            <p className="login-subtitle">Acceso para empleados</p>
+          </div>
+          
+          {mensaje && <div className="login-message">{mensaje}</div>}
+          
+          <div className="form-group">
+            <label htmlFor="username">Usuario</label>
+            <input
+              id="username"
               type="text" 
               value={userName} 
               onChange={(e) => setUserName(e.target.value)} 
-              placeholder="Usuario"
+              placeholder="Ingrese su usuario"
+              disabled={loading}
             />
-            <input 
-              className="input"
+          </div>
+          
+          <div className="form-group">
+            <label htmlFor="password">Contraseña</label>
+            <input
+              id="password"
               type="password" 
               value={clave} 
               onChange={(e) => setClave(e.target.value)} 
-              placeholder="Clave"
+              placeholder="Ingrese su contraseña"
+              disabled={loading}
             />
-            <br/>
-            <button className = "button" onClick={HandleLoginUser} disabled={loading}>
-              {loading ? "Cargando..." : "Iniciar Sesión"}
-            </button>
           </div>
+          
+          <button 
+            className="login-button" 
+            onClick={HandleLoginUser} 
+            disabled={loading}
+          >
+            {loading ? (
+              <>
+                <span className="spinner"></span>
+                Cargando...
+              </>
+            ) : "Iniciar Sesión"}
+          </button>
         </div>
       ) : (
-        // Vista después del login exitoso
-        <div>
-        <h2>{getUserRoleName(info.typeUser)}: <u>{info.fullNameUser}</u></h2>
+        <div className="user-dashboard">
+          <div className="user-header">
+            <h2>
+              <span className="user-role">{getUserRoleName(info.typeUser)}</span>
+              <span className="user-name">{info.fullNameUser}</span>
+            </h2>
+          </div>
           
           {renderUserDashboard()}
           
-          <button className = "button_close" onClick={() => (setInfo(null))}>
+          <button 
+            className="logout-button" 
+            onClick={() => setInfo(null)}
+          >
             Cerrar Sesión
           </button>
         </div>
@@ -136,4 +148,4 @@ function App() {
   );
 }
 
-export default App;
+export default LoginModule;

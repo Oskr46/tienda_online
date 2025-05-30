@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import EditProduct from './editProduct';
 import DeleteProduct from './deleteProduct';
 import { PDFDownloadLink, Document, Page, Text, View, StyleSheet, Image } from '@react-pdf/renderer';
+import '../../styles/productTable.css';
 
 interface Product {
   idProduct: number;
@@ -125,7 +126,7 @@ const fetchImage = async (url: string): Promise<string> => {
     console.error('Error loading image:', error);
     return '';
   }
-};;
+};
 
 const ProductsPDFDocument = ({ products }: { products: Product[] }) => (
   <Document>
@@ -217,24 +218,20 @@ const ProductTable: React.FC = () => {
       
       const data = await response.json();
       
-      // Aseguramos que productsData sea siempre un array
       let productsData = [];
       if (Array.isArray(data)) {
         productsData = data;
       } else if (data.data && Array.isArray(data.data)) {
         productsData = data.data;
       } else if (data && typeof data === 'object' && !Array.isArray(data)) {
-        // Si es un objeto único, lo convertimos a array
         productsData = [data];
       }
       
-      // Si no hay productos después de la normalización
       if (productsData.length === 0) {
         setProducts([]);
         return;
       }
       
-      // Precargar imágenes
       const productsWithImages = await Promise.all(
         productsData.map(async (product: Product) => {
           try {
@@ -273,75 +270,61 @@ const ProductTable: React.FC = () => {
   };
 
   if (loading) {
-    return <div style={{ padding: 20, textAlign: 'center', color: '#ffffff' }}>Cargando productos...</div>;
+    return <div className="loading-state">Cargando productos...</div>;
   }
 
   if (error) {
-    return <div style={{ padding: 20, textAlign: 'center', color: '#ff6b6b' }}>Error: {error}</div>;
+    return <div className="error-state">Error: {error}</div>;
   }
 
   if (!products || products.length === 0) {
-    return <div style={{ padding: 20, textAlign: 'center', color: '#a0a0a0' }}>No hay productos registrados en la base de datos</div>;
+    return <div className="empty-state">No hay productos registrados en la base de datos</div>;
   }
 
   return (
-    <div style={{ padding: 20 }}>
-      <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 20 }}>
+    <div className="product-table-container">
+      <div className="product-table-header">
+        <h2 className="product-table-title">Lista de Productos</h2>
         <PDFDownloadLink
           document={<ProductsPDFDocument products={products} />}
           fileName={`reporte_productos_${new Date().toISOString().slice(0, 10)}.pdf`}
         >
           {({ loading }) => (
-            <button 
-              style={{
-                padding: '12px 20px',
-                backgroundColor: '#1a1a1a',
-                color: '#ffffff',
-                border: '1px solid #333333',
-                borderRadius: '6px',
-                fontWeight: '600',
-                fontSize: '14px',
-                cursor: 'pointer',
-                transition: 'all 0.3s ease',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px'
-              }}
-              disabled={loading}
-            >
-              {loading ? 'Generando PDF...' : 'Descargar Reporte'}
+            <button className="pdf-download-btn" disabled={loading}>
+              {loading ? (
+                <>
+                  <span className="spinner"></span>
+                  Generando PDF...
+                </>
+              ) : 'Descargar Reporte'}
             </button>
           )}
         </PDFDownloadLink>
       </div>
       
-      <table style={{ 
-        width: '100%', 
-        borderCollapse: 'collapse',
-        border: '1px solid #333333'
-      }}>
+      <table className="products-table">
         <thead>
-          <tr style={{ backgroundColor: '#1a1a1a' }}>
-            <th style={{ padding: 12, textAlign: 'left', borderBottom: '1px solid #333333', color: '#4d9eff' }}>ID</th>
-            <th style={{ padding: 12, textAlign: 'left', borderBottom: '1px solid #333333', color: '#4d9eff' }}>Nombre</th>
-            <th style={{ padding: 12, textAlign: 'left', borderBottom: '1px solid #333333', color: '#4d9eff' }}>Precio</th>
-            <th style={{ padding: 12, textAlign: 'left', borderBottom: '1px solid #333333', color: '#4d9eff' }}>Imagen</th>
-            <th style={{ padding: 12, textAlign: 'left', borderBottom: '1px solid #333333', color: '#4d9eff' }}>Acciones</th>
+          <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Precio</th>
+            <th>Stock</th>
+            <th>Imagen</th>
+            <th>Acciones</th>
           </tr>
         </thead>
         <tbody>
           {products.map((product) => (
-            <tr key={product.idProduct} style={{ borderBottom: '1px solid #333333' }}>
-              <td style={{ padding: 12, color: '#ffffff' }}>{product.idProduct}</td>
-              <td style={{ padding: 12, color: '#ffffff' }}>{product.nameProduct}</td>
-              <td style={{ padding: 12, color: '#ffffff' }}>${product.priceProduct}</td>
-              <td style={{ padding: 12 }}>
+            <tr key={product.idProduct}>
+              <td>{product.idProduct}</td>
+              <td>{product.nameProduct}</td>
+              <td>${product.priceProduct}</td>
+              <td>{product.stockProduct} / {product.maxStockProduct}</td>
+              <td>
                 {product.originalImgUrl && (
                   <img 
                     src={`http://localhost:3002${product.originalImgUrl}`}
-                    width={60} 
-                    height={60} 
-                    style={{ border: '1px solid #333333' }}
+                    className="product-image"
                     alt={product.nameProduct}
                     crossOrigin="anonymous"
                     onError={(e) => {
@@ -351,9 +334,11 @@ const ProductTable: React.FC = () => {
                   />
                 )}
               </td>
-              <td style={{ padding: 12, display: 'flex', gap: 8 }}>
-                <EditProduct productos={product} refresh={refreshProducts} />
-                <DeleteProduct idProduct={product.idProduct} refresh={refreshProducts} />
+              <td>
+                <div className="actions-container">
+                  <EditProduct productos={product} refresh={refreshProducts} />
+                  <DeleteProduct idProduct={product.idProduct} refresh={refreshProducts} />
+                </div>
               </td>
             </tr>
           ))}

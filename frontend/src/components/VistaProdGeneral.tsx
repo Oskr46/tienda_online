@@ -1,7 +1,7 @@
 import React from "react";
 import ProductosItem from "./products/productosItems";
 import ProductosDetalles from "./products/productosDetalles";
-import "../styles/products.css";
+import "../styles/vistaProducts.css";
 
 interface Product {
   idProduct: number;
@@ -26,32 +26,23 @@ const VistaProdGeneral: React.FC<productsProp> = ({
   selectedProduct, 
   refreshProducts
 }) => {
-  // Dividir productos en grupos de 4 para las columnas
-  const getProductColumns = () => {
-    const columns = [];
-    const productsPerColumn = 2;
-    const columnCount = Math.min(Math.ceil(products.length / productsPerColumn), 4);
-    
-    for (let i = 0; i < columnCount; i++) {
-      columns.push(
-        products.slice(i * productsPerColumn, (i + 1) * productsPerColumn)
-      );
-    }
-    
-    return columns;
-  };
-
-  const productColumns = getProductColumns();
-
   return (
     <div className="productos-container">
       <h2>Listado de Productos</h2>
       <div className="productos">
         {!selectedProduct ? (
-          <div className="productos-grid">
-            {productColumns.map((column, columnIndex) => (
-              <div key={`column-${columnIndex}`} className="productos-column">
-                {column.map((product) => (
+          <>
+            {products.length === 0 ? (
+              <div className="no-products">
+                <h3>No se encontraron productos</h3>
+                <p>Parece que no hay productos disponibles en este momento.</p>
+                <button className="reload-btn" onClick={refreshProducts}>
+                  Recargar productos
+                </button>
+              </div>
+            ) : (
+              <div className="productos-grid">
+                {products.map((product) => (
                   <div className="contenedor" key={product.idProduct}>
                     <ProductosItem
                       product={product} 
@@ -60,8 +51,8 @@ const VistaProdGeneral: React.FC<productsProp> = ({
                   </div>
                 ))}
               </div>
-            ))}
-          </div>
+            )}
+          </>
         ) : (
           <ProductosDetalles 
             product={selectedProduct} 

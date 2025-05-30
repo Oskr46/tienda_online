@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import EditAmount from './editAmount';
 import React from 'react';
+import '../../styles/productTable.css'; // Reutilizando el CSS existente
 
 interface Product {
   idProduct: number;
@@ -32,14 +33,12 @@ const ProductAmountTable: React.FC = () => {
       
       const data = await response.json();
       
-      // Aseguramos que productsData sea siempre un array
       let productsData = [];
       if (Array.isArray(data)) {
         productsData = data;
       } else if (data.data && Array.isArray(data.data)) {
         productsData = data.data;
       } else if (data && typeof data === 'object' && !Array.isArray(data)) {
-        // Si es un objeto único, lo convertimos a array
         productsData = [data];
       }
       
@@ -61,60 +60,64 @@ const ProductAmountTable: React.FC = () => {
   };
 
   if (loading) {
-    return <div style={{ padding: 20, textAlign: 'center', color: '#ffffff' }}>Cargando productos...</div>;
+    return <div className="loading-state">Cargando productos...</div>;
   }
 
   if (error) {
-    return <div style={{ padding: 20, textAlign: 'center', color: '#ff6b6b' }}>Error: {error}</div>;
+    return <div className="error-state">Error: {error}</div>;
   }
 
   if (!products || products.length === 0) {
-    return <div style={{ padding: 20, textAlign: 'center', color: '#a0a0a0' }}>No hay productos registrados en la base de datos</div>;
+    return <div className="empty-state">No hay productos registrados en la base de datos</div>;
   }
 
   return (
-    <>
-      <div>
-        <table className='tabla' border={1} cellPadding={5} cellSpacing={3}>
-          <thead>
-            <tr className='cabecera_tabla'>
-              <th>Nombre del Producto</th>
-              <th>Imagen del Producto</th>
-              <th>Minimo en Stock</th>
-              <th>Maximo en Stock</th>
-              <th>En Stock</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          
-          <tbody>
-            {products.map((prod) => (
-              <tr key={prod.idProduct}>
-                <td>{prod.nameProduct}</td>
-                <td>
+    <div className="product-table-container">
+      <div className="product-table-header">
+        <h2 className="product-table-title">Gestión de Inventario</h2>
+      </div>
+      
+      <table className="products-table">
+        <thead>
+          <tr>
+            <th>Producto</th>
+            <th>Imagen</th>
+            <th>Stock Mínimo</th>
+            <th>Stock Máximo</th>
+            <th>Stock Actual</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          {products.map((prod) => (
+            <tr key={prod.idProduct}>
+              <td>{prod.nameProduct}</td>
+              <td>
+                {prod.urlImg && (
                   <img 
-                    src={`http://localhost:3002${prod.urlImg}`} 
-                    width={120} 
-                    height={120}
+                    src={`http://localhost:3002${prod.urlImg}`}
+                    className="product-image"
                     alt={prod.nameProduct}
                     onError={(e) => {
                       const target = e.target as HTMLImageElement;
                       target.style.display = 'none';
                     }}
                   />
-                </td>
-                <td>{prod.minStockProduct}</td>
-                <td>{prod.maxStockProduct}</td>
-                <td>{prod.stockProduct}</td>
-                <td>
+                )}
+              </td>
+              <td>{prod.minStockProduct}</td>
+              <td>{prod.maxStockProduct}</td>
+              <td>{prod.stockProduct}</td>
+              <td>
+                <div className="actions-container">
                   <EditAmount productos={prod} refresh={refreshProducts}/>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </>
+                </div>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 }
 

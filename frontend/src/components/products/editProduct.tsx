@@ -1,16 +1,15 @@
 import React, { useState, useRef, ChangeEvent } from "react";
-import "../../styles/login.css";
+import "../../styles/editProduct.css";
 
-  interface Product{
-    idProduct: number;
-    nameProduct: string;
-    priceProduct: string;
-    maxStockProduct: string;
-    minStockProduct: string;
-    stockProduct: string;
-    urlImg: string;
+interface Product {
+  idProduct: number;
+  nameProduct: string;
+  priceProduct: string;
+  maxStockProduct: string;
+  minStockProduct: string;
+  stockProduct: string;
+  urlImg: string;
 }
-
 
 interface Props {
   productos: Product;
@@ -46,12 +45,10 @@ const EditProduct: React.FC<Props> = ({ productos, refresh }) => {
 
     try {
       const formData = new FormData();
-      // Siempre enviar los datos básicos
       formData.append('name', nombre);
       formData.append('price', price);
       formData.append('idProduct', productos.idProduct.toString());
       
-      // Solo agregar la imagen si se seleccionó una nueva
       if (selectedFile) {
         formData.append('image', selectedFile);
       }
@@ -81,51 +78,47 @@ const EditProduct: React.FC<Props> = ({ productos, refresh }) => {
 
   if (!editMode) {
     return (
-      <div>
-        <button className="button" onClick={() => setEditMode(true)}>
-          Modificar
-        </button>
-      </div>
+      <button className="edit-button" onClick={() => setEditMode(true)}>
+        Modificar
+      </button>
     );
   }
 
   return (
-    <div>
+    <div className="edit-product-container">
       {error && <div className="error-message">{error}</div>}
-      <form onSubmit={handleUpdate}>
-        <div>
+      <form className="edit-product-form" onSubmit={handleUpdate}>
+        <div className="form-group">
           <label>Nombre del Producto</label>
           <input
-            className="input"
             type="text"
             value={nombre}
             onChange={(e) => setNombre(e.target.value)}
+            required
           />
         </div>
 
-        <div>
+        <div className="form-group">
           <label>Precio del Producto</label>
           <input
-            className="input"
             type="text"
             value={price}
             onChange={(e) => setPrice(e.target.value)}
+            required
           />
         </div>
 
-        <div>
+        <div className="form-group">
           <label>Imagen del Producto</label>
           {previewImg && (
-            <div>
+            <div className="image-preview">
               <img 
                 src={previewImg} 
                 alt="Vista previa" 
-                style={{ maxWidth: '200px', maxHeight: '200px' }}
               />
             </div>
           )}
           <input
-            className="input"
             type="file"
             onChange={handleImageChange}
             accept="image/*"
@@ -133,12 +126,17 @@ const EditProduct: React.FC<Props> = ({ productos, refresh }) => {
           <small>Dejar vacío para mantener la imagen actual</small>
         </div>
 
-        <div>
-          <button className="button" type="submit" disabled={isLoading}>
-            {isLoading ? 'Guardando...' : 'Guardar'}
+        <div className="button-group">
+          <button className="save-button" type="submit" disabled={isLoading}>
+            {isLoading ? (
+              <>
+                <span className="spinner"></span>
+                Guardando...
+              </>
+            ) : 'Guardar'}
           </button>
           <button 
-            className="button_close" 
+            className="cancel-button" 
             type="button"
             onClick={() => {
               setEditMode(false);

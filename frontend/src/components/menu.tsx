@@ -1,39 +1,45 @@
 import React from "react";
-import iconoInicio from "../assets/icono_inicio.png"
-import iconoCarrito from "../assets/icono_carrito.png"
-import iconoTelefono from "../assets/icono_telefono.png"
-import iconoEmpleado from "../assets/user_icon.png"
-import "../styles/menu.css"
+import iconoInicio from "../assets/icono_inicio.png";
+import iconoCarrito from "../assets/icono_carrito.png";
+import iconoTelefono from "../assets/icono_telefono.png";
+import iconoEmpleado from "../assets/user_icon.png";
+import "../styles/menu.css";
 
-interface itemsMenu{
+interface ItemsMenu {
     onNavigate: (page: 'Inicio' | 'Productos' | 'Contactos' | 'Empleados') => void;
+    currentPage?: 'Inicio' | 'Productos' | 'Contactos' | 'Empleados';
 }
 
-const Menu: React.FC<itemsMenu> = ({ onNavigate }) => {
-    return(
-    <div>
-        <button className="head_button" onClick={()=> onNavigate('Inicio')}>
-            <img src={iconoInicio} alt="Inicio" width={45} height={45}></img>
-            <br/>
-            Inicio
-        </button>
-        <button className="head_button" onClick={()=> onNavigate('Productos')}>
-            <img src={iconoCarrito} alt="Productos" width={45} height={45}></img>
-            <br/>
-            Productos
-        </button>
-        <button className="head_button" onClick={()=> onNavigate('Contactos')}>
-        <img src={iconoTelefono} alt="Contactos" width={45} height={45}></img>
-        <br/>
-        Contactos
-        </button>
+const Menu: React.FC<ItemsMenu> = ({ onNavigate, currentPage }) => {
+    const menuItems = [
+        { id: 'Inicio', icon: iconoInicio, label: 'Inicio' },
+        { id: 'Productos', icon: iconoCarrito, label: 'Productos' },
+        { id: 'Contactos', icon: iconoTelefono, label: 'Contacto' },
+        { id: 'Empleados', icon: iconoEmpleado, label: 'Empleados' }
+    ];
 
-        <button className="head_button" onClick={()=> onNavigate('Empleados')}>
-        <img src={iconoEmpleado} alt="Login Empleados" width={45} height={45}></img>
-        <br/>
-        Empleados
-        </button>
-    </div>
+    return (
+        <nav className="menu-nav">
+            <ul className="menu-list">
+                {menuItems.map((item) => (
+                    <li key={item.id} className="menu-item">
+                        <button
+                            className={`menu-button ${currentPage === item.id ? 'active' : ''}`}
+                            onClick={() => onNavigate(item.id as any)}
+                            aria-current={currentPage === item.id ? 'page' : undefined}
+                        >
+                            <img 
+                                src={item.icon} 
+                                alt={item.label}
+                                className="menu-icon"
+                            />
+                            <span className="menu-text">{item.label}</span>
+                        </button>
+                    </li>
+                ))}
+            </ul>
+        </nav>
     );
 };
+
 export default Menu;

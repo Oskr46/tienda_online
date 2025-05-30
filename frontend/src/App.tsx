@@ -62,7 +62,7 @@ const App: React.FC = () => {
     <div>
       <div className="header">
         <a href="/"><h1>LectroMart</h1></a>
-        <Menu onNavigate={seleccionarMenu}/>
+        <Menu onNavigate={seleccionarMenu} currentPage={paginaActual} />
       </div>
       <div className="contenido">
         {paginaActual === 'Inicio' && <Inicio/>}

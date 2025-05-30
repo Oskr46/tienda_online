@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "../../styles/login.css";
+import "../../styles/deleteproduct.css";
 
 interface Props {
   idProduct: number;
@@ -36,16 +36,21 @@ const DeleteProduct: React.FC<Props> = ({ idProduct, refresh }) => {
   };
 
   return (
-    <>
+    <div className="delete-container">
       <button 
         className="button_finish" 
         onClick={handleDelete}
         disabled={isDeleting}
       >
-        {isDeleting ? 'Eliminando...' : 'Eliminar'}
+        {isDeleting ? (
+          <>
+            <span className="delete-spinner"></span>
+            Eliminando...
+          </>
+        ) : 'Eliminar'}
       </button>
       {error && <div className="error-message">{error}</div>}
-    </>
+    </div>
   );
 };
 

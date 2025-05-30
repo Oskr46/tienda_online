@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "../../styles/login.css";
+import "../../styles/editProduct.css";
 
 interface UserData {
   idUser: number;
@@ -19,8 +19,6 @@ const EditUser: React.FC<Props> = ({ user, refresh }) => {
   const [editMode, setEditMode] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
-
-  
 
   const handleUpdate = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -62,20 +60,19 @@ const EditUser: React.FC<Props> = ({ user, refresh }) => {
 
   if (!editMode) {
     return (
-      <button className="button" onClick={() => setEditMode(true)}>
-        Editar
+      <button className="edit-button" onClick={() => setEditMode(true)}>
+        Editar Usuario
       </button>
     );
   }
 
   return (
-    <div className="edit-user-container">
+    <div className="edit-product-container">
       {error && <div className="error-message">{error}</div>}
-      <form onSubmit={handleUpdate}>
+      <form className="edit-product-form" onSubmit={handleUpdate}>
         <div className="form-group">
           <label>Nombre Completo</label>
           <input
-            className="input"
             type="text"
             value={fullName}
             onChange={(e) => setFullName(e.target.value)}
@@ -86,7 +83,6 @@ const EditUser: React.FC<Props> = ({ user, refresh }) => {
         <div className="form-group">
           <label>Tipo de Usuario</label>
           <select
-            className="input"
             value={userType}
             onChange={(e) => setUserType(e.target.value)}
             required
@@ -98,11 +94,16 @@ const EditUser: React.FC<Props> = ({ user, refresh }) => {
         </div>
 
         <div className="button-group">
-          <button className="button" type="submit" disabled={isLoading}>
-            {isLoading ? 'Guardando...' : 'Guardar'}
+          <button className="save-button" type="submit" disabled={isLoading}>
+            {isLoading ? (
+              <>
+                <span className="spinner"></span>
+                Guardando...
+              </>
+            ) : 'Guardar'}
           </button>
           <button 
-            className="button_close" 
+            className="cancel-button" 
             type="button"
             onClick={() => setEditMode(false)}
             disabled={isLoading}

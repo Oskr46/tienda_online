@@ -1,16 +1,379 @@
-body{
-  background-color: rgb(17, 19, 22);
-  color: white;
+/* Variables de diseño */
+:root {
+  --primary: #4a6fa5;
+  --secondary: #166088;
+  --accent: #4fc3f7;
+  --dark: #0a192f;
+  --light: #f8f9fa;
+  --light-gray: #e0e0e0;
+  --medium-gray: #6c757d;
+  --dark-gray: #343a40;
+  --success: #4CAF50;
+  --warning: #FFC107;
+  --danger: #F44336;
+}
+
+/* Estilos base */
+body {
+  background-color: var(--dark);
+  color: var(--light);
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+
+/* Header */
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 70px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  z-index: 1000;
+  padding: 0 5%;
+  box-sizing: border-box;
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+}
+
+.header a {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: white;
+  text-decoration: none;
+  white-space: nowrap;
+  margin-right: auto;
+  transition: all 0.3s ease;
+}
+
+.header a:hover {
+  color: var(--accent);
+}
+
+/* Menú */
+.head_button {
+  border: none;
+  border-radius: 25px;
+  color: white;
+  background-color: rgba(255, 255, 255, 0.1);
+  margin: 0 10px;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  backdrop-filter: blur(5px);
+}
+
+.head_button:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Contenido principal */
+.contenido {
+  max-width: 1200px;
+  padding: 20px;
+  margin: 60px 50px;
+}
+
+/* Estilos específicos para la página de contacto */
+.contact-container {
+  padding: 2rem 0;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.contact-header {
+  text-align: center;
+  margin-bottom: 3rem;
+  padding: 0 20px;
+}
+
+.contact-header h2 {
+  font-size: 2.5rem;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+  position: relative;
+  display: inline-block;
+}
+
+.contact-header h2::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 3px;
+  background: var(--accent);
+}
+
+.contact-subtitle {
+  font-size: 1.2rem;
+  color: var(--light-gray);
+}
+
+.contact-content {
+  display: flex;
   justify-content: center;
+  padding: 0 20px;
+}
+
+.contact-methods {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  width: 100%;
+  max-width: 1000px;
+}
+
+.contact-card {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 15px;
+  padding: 2rem;
+  text-align: center;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
   align-items: center;
 }
 
-.contenido{
-  justify-self: center;
-  align-self: center;
-  margin-top: 120px;
-  text-align: center;
+.email-card {
+  border-top: 4px solid #4fc3f7;
 }
 
+.phone-card {
+  border-top: 4px solid #4CAF50;
+}
 
+.address-card {
+  border-top: 4px solid #FFC107;
+}
+
+.contact-card:hover {
+  transform: translateY(-5px);
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.contact-icon {
+  font-size: 2.5rem;
+  margin-bottom: 1.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.contact-card h3 {
+  font-size: 1.4rem;
+  margin-bottom: 1rem;
+  color: var(--accent);
+}
+
+.contact-card p {
+  margin-bottom: 0.8rem;
+  color: var(--light-gray);
+  font-size: 1rem;
+}
+
+.contact-info {
+  margin: 1rem 0;
+  color: var(--light);
+  line-height: 1.6;
+}
+
+.contact-link {
+  display: inline-block;
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  padding: 0.8rem 1.5rem;
+  border-radius: 30px;
+  background: rgba(79, 195, 247, 0.1);
+  margin-top: 1rem;
+}
+
+.contact-link:hover {
+  background: rgba(79, 195, 247, 0.2);
+  color: white;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .contact-header h2 {
+    font-size: 2rem;
+  }
+  
+  .contact-subtitle {
+    font-size: 1rem;
+  }
+  
+  .contact-methods {
+    grid-template-columns: 1fr;
+    max-width: 500px;
+  }
+  
+  .contact-card {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .contact-header h2 {
+    font-size: 1.8rem;
+  }
+  
+  .contact-icon {
+    width: 60px;
+    height: 60px;
+    font-size: 2rem;
+  }
+  
+  .contact-card h3 {
+    font-size: 1.3rem;
+  }
+}
+
+/* Estilos específicos para el componente Inicio */
+.inicio-container {
+    width: 100%;
+    max-width: 1200px;
+}
+
+.inicio-hero {
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
+                url('https://images.unsplash.com/photo-1518770660439-4636190af475?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+    background-size: cover;
+    background-position: center;
+    height: 500px;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+    margin-bottom: 40px;
+    color: white;
+}
+
+.inicio-hero h2 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: var(--accent);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.inicio-subtitle {
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+    max-width: 700px;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.inicio-button {
+    background-color: var(--accent);
+    color: var(--dark);
+    border: none;
+    padding: 12px 30px;
+    font-size: 1.1rem;
+    border-radius: 30px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(79, 195, 247, 0.4);
+}
+
+.inicio-button:hover {
+    background-color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(79, 195, 247, 0.6);
+}
+
+.inicio-features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.feature-card {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    padding: 30px;
+    text-align: center;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.feature-card:hover {
+    transform: translateY(-10px);
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.feature-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.feature-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--accent);
+}
+
+.feature-card p {
+    color: var(--light-gray);
+    font-size: 1.1rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .inicio-hero {
+        height: 400px;
+    }
+    
+    .inicio-hero h2 {
+        font-size: 2.2rem;
+    }
+    
+    .inicio-subtitle {
+        font-size: 1.2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .inicio-hero {
+        height: 350px;
+        padding: 15px;
+    }
+    
+    .inicio-hero h2 {
+        font-size: 1.8rem;
+    }
+    
+    .inicio-subtitle {
+        font-size: 1rem;
+    }
+    
+    .inicio-features {
+        grid-template-columns: 1fr;
+    }
+    
+    .feature-card {
+        padding: 20px;
+    }
+}

@@ -1,5 +1,5 @@
-import React, { useState } from "react"
-import "../../styles/products.css"
+import React, { useState } from "react";
+import "../../styles/detailsProduct.css";
 
 interface Product {
   idProduct: number;
@@ -77,7 +77,7 @@ const ProductosDetalles: React.FC<ProductosDetallesProps> = ({
         idProduct: product.idProduct
       });
     } catch (error) {
-      setSubmitError(error.message || 'Ocurrió un error al enviar el comentario');
+      setSubmitError(error instanceof Error ? error.message : 'Ocurrió un error al enviar el comentario');
     } finally {
       setIsSubmitting(false);
     }
@@ -86,35 +86,30 @@ const ProductosDetalles: React.FC<ProductosDetallesProps> = ({
   return (
     <div className="product-detail-container">
       <div className="product-info">
+        <h3>Producto: <br/><u>{product.nameProduct}</u></h3>
+        <img 
+          className="imagen" 
+          src={`http://localhost:3002${product.urlImg}`} 
+          alt={product.nameProduct}
+        />
         <div>
-          <h3>Producto: <br/><u>{product.nameProduct}</u></h3>
-        </div>
-        <div>
-          <img 
-            className="imagen" 
-            src={`http://localhost:3002${product.urlImg}`} 
-            alt={product.nameProduct} 
-            width={260} 
-            height={260}
-          />
-        </div>
-        <div>
-          <h3>Price:</h3>
+          <h3>Precio:</h3>
           <p>{product.priceProduct}</p>
         </div>
-        <button 
-          className="button" 
-          onClick={onBack}
-        >
-          Volver
-        </button>
-        <button 
-          className="button" 
-          onClick={refreshProducts}
-          style={{ marginLeft: '10px' }}
-        >
-          Actualizar Lista
-        </button>
+        <div className="button-group">
+          <button 
+            className="button" 
+            onClick={onBack}
+          >
+            Volver
+          </button>
+          <button 
+            className="button" 
+            onClick={refreshProducts}
+          >
+            Actualizar Lista
+          </button>
+        </div>
       </div>
 
       <div className="comment-section">
@@ -129,6 +124,7 @@ const ProductosDetalles: React.FC<ProductosDetallesProps> = ({
               value={commentData.name}
               onChange={handleInputChange}
               required
+              placeholder="Tu nombre completo"
             />
           </div>
           <div className="form-group">
@@ -140,6 +136,7 @@ const ProductosDetalles: React.FC<ProductosDetallesProps> = ({
               value={commentData.email}
               onChange={handleInputChange}
               required
+              placeholder="tu@email.com"
             />
           </div>
           <div className="form-group">
@@ -150,14 +147,15 @@ const ProductosDetalles: React.FC<ProductosDetallesProps> = ({
               value={commentData.commentary}
               onChange={handleInputChange}
               required
-              rows={4}
+              rows={5}
+              placeholder="Escribe tu experiencia con este producto..."
             />
           </div>
           <div className="form-group">
             <label>Calificación (1-5):</label>
             <div className="rating-options">
               {[1, 2, 3, 4, 5].map(num => (
-                <label key={num}>
+                <label key={num} title={`Calificar con ${num} estrella${num !== 1 ? 's' : ''}`}>
                   <input
                     type="radio"
                     name="valoration"
@@ -166,7 +164,7 @@ const ProductosDetalles: React.FC<ProductosDetallesProps> = ({
                     onChange={handleInputChange}
                     required
                   />
-                  {num}
+                  <span>{num}</span>
                 </label>
               ))}
             </div>
@@ -176,7 +174,12 @@ const ProductosDetalles: React.FC<ProductosDetallesProps> = ({
             className="button"
             disabled={isSubmitting}
           >
-            {isSubmitting ? 'Enviando...' : 'Enviar comentario'}
+            {isSubmitting ? (
+              <>
+                <span className="spinner"></span>
+                Enviando...
+              </>
+            ) : 'Enviar comentario'}
           </button>
           {submitSuccess && <p className="success-message">¡Comentario enviado con éxito!</p>}
           {submitError && <p className="error-message">{submitError}</p>}

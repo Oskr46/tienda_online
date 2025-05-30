@@ -1,21 +1,38 @@
+:root {
+  --primary: #4a6fa5;
+  --secondary: #166088;
+  --accent: #4fc3f7;
+  --dark: #0a192f;
+  --light: #f8f9fa;
+  --success: #4CAF50;
+  --warning: #FFC107;
+  --danger: #F44336;
+  --gray: #6c757d;
+  --light-gray: rgba(255, 255, 255, 0.6);
+}
+
 /* Estilos base modo oscuro */
 .bandeja-container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
     font-family: 'Arial', sans-serif;
-    background-color: rgb(17, 19, 22);
-    color: #e0e0e0;
+    color: var(--light);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
     min-height: auto;
 }
 
 .bandeja-titulo {
-    color: #ffffff;
+    color: var(--accent);
     text-align: center;
     margin-bottom: 30px;
     font-size: 2rem;
     font-weight: 300;
     letter-spacing: 0.5px;
+    text-transform: uppercase;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 15px;
 }
 
 /* Lista de comentarios */
@@ -27,18 +44,22 @@
 }
 
 .comentario-tarjeta {
-    background-color: #1e1e1e;
+    background: rgba(255, 255, 255, 0.05);
     border-radius: 8px;
     padding: 20px;
     cursor: pointer;
-    transition: transform 0.2s, box-shadow 0.2s;
-    border-left: 4px solid #3a3a3a;
+    transition: all 0.3s ease;
+    border-left: 4px solid var(--accent);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .comentario-tarjeta:hover {
-    transform: translateY(-3px);
-    background-color: #252525;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    border-left-color: var(--primary);
 }
 
 .comentario-header {
@@ -52,19 +73,19 @@
 
 .comentario-nombre {
     font-weight: 600;
-    color: #ffffff;
+    color: var(--light);
     margin-right: 10px;
     font-size: 1.1rem;
 }
 
 .comentario-email {
-    color: #a0a0a0;
+    color: var(--light-gray);
     font-size: 0.9rem;
     word-break: break-all;
 }
 
 .comentario-preview {
-    color: #c0c0c0;
+    color: var(--light-gray);
     margin: 15px 0;
     line-height: 1.5;
     font-size: 0.95rem;
@@ -72,10 +93,14 @@
 
 .comentario-producto-id {
     font-size: 0.8rem;
-    color: #7a7a7a;
+    color: var(--gray);
     display: block;
     margin-top: 10px;
     font-family: 'Courier New', monospace;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 3px 6px;
+    border-radius: 4px;
+    display: inline-block;
 }
 
 /* Rating con estrellas */
@@ -86,18 +111,18 @@
 }
 
 .estrella {
-    color: #3a3a3a;
+    color: var(--gray);
     font-size: 1.1rem;
 }
 
 .estrella.llena {
-    color: #ffb300;
+    color: var(--warning);
 }
 
 .rating-numero {
     margin-left: 8px;
     font-size: 0.9rem;
-    color: #a0a0a0;
+    color: var(--light-gray);
 }
 
 /* Detalle del comentario */
@@ -105,40 +130,44 @@
     max-width: 800px;
     margin: 0 auto;
     padding: 20px;
-    background-color:rgb(17, 19, 22);
-    color: #e0e0e0;
+    color: var(--light);
     min-height: auto;
 }
 
 .volver-btn {
     background: none;
     border: none;
-    color: #64b5f6;
+    color: var(--accent);
     font-size: 1rem;
     cursor: pointer;
-    padding: 8px 0;
+    padding: 8px 16px;
     margin-bottom: 20px;
     display: flex;
     align-items: center;
     gap: 5px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
 }
 
 .volver-btn:hover {
-    color: #42a5f5;
+    color: var(--light);
+    background: rgba(79, 195, 247, 0.1);
 }
 
 .detalle-comentario {
-    background-color: #1e1e1e;
+    background: rgba(255, 255, 255, 0.05);
     border-radius: 8px;
     padding: 30px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
 }
 
 .detalle-comentario h2 {
-    color: #ffffff;
+    color: var(--accent);
     margin-top: 0;
     font-weight: 300;
-    border-bottom: 1px solid #333;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     padding-bottom: 10px;
 }
 
@@ -147,23 +176,23 @@
     justify-content: space-between;
     margin-bottom: 20px;
     padding-bottom: 20px;
-    border-bottom: 1px solid #333;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     flex-wrap: wrap;
     gap: 15px;
 }
 
 .detalle-header p {
     margin: 5px 0;
-    color: #c0c0c0;
+    color: var(--light-gray);
 }
 
 .detalle-header strong {
-    color: #ffffff;
+    color: var(--light);
     font-weight: 500;
 }
 
 .detalle-texto {
-    background-color: #252525;
+    background: rgba(0, 0, 0, 0.2);
     padding: 20px;
     border-radius: 5px;
     line-height: 1.6;
@@ -171,33 +200,82 @@
 
 .detalle-texto h3 {
     margin-top: 0;
-    color: #ffffff;
+    color: var(--light);
     font-weight: 400;
 }
 
 .detalle-texto p {
-    color: #d0d0d0;
+    color: var(--light-gray);
     white-space: pre-line;
 }
 
 /* Estados */
 .cargando, .sin-comentarios {
     text-align: center;
-    color: #a0a0a0;
+    color: var(--light-gray);
     font-size: 1.1rem;
     margin-top: 50px;
     padding: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .error {
     text-align: center;
-    color: #ef5350;
+    color: var(--danger);
     font-size: 1.1rem;
     margin-top: 50px;
     padding: 20px;
-    background-color: #1e1e1e;
-    border-radius: 5px;
+    background: rgba(244, 67, 54, 0.1);
+    border-radius: 8px;
     max-width: 500px;
     margin-left: auto;
     margin-right: auto;
+    border-left: 4px solid var(--danger);
+}
+
+/* Efectos y animaciones */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.comentario-tarjeta {
+    animation: fadeIn 0.5s ease-out forwards;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .bandeja-container {
+        padding: 15px;
+    }
+    
+    .bandeja-titulo {
+        font-size: 1.5rem;
+    }
+    
+    .lista-comentarios {
+        grid-template-columns: 1fr;
+    }
+    
+    .detalle-comentario {
+        padding: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .bandeja-titulo {
+        font-size: 1.3rem;
+    }
+    
+    .detalle-header {
+        flex-direction: column;
+    }
+    
+    .detalle-texto {
+        padding: 15px;
+    }
 }

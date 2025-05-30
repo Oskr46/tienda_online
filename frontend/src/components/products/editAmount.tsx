@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "../../styles/login.css";
+import "../../styles/editProduct.css";
 
 interface Product {
   idProduct: number;
@@ -17,7 +17,6 @@ interface Props {
 }
 
 const EditAmount: React.FC<Props> = ({ productos, refresh }) => {
-  const [nombre, setNombre] = useState(productos.nameProduct);
   const [maxStock, setMaxStock] = useState(productos.maxStockProduct);
   const [minStock, setMinStock] = useState(productos.minStockProduct);
   const [stockAmount, setStockAmount] = useState(productos.stockProduct);
@@ -91,22 +90,19 @@ const EditAmount: React.FC<Props> = ({ productos, refresh }) => {
 
   if (!editMode) {
     return (
-      <div>
-        <button className="button" onClick={() => setEditMode(true)}>
-          Modificar
-        </button>
-      </div>
+      <button className="edit-button" onClick={() => setEditMode(true)}>
+        Modificar Stock
+      </button>
     );
   }
 
   return (
-    <div>
-      {error && <div className="error-message" style={{color: 'red', marginBottom: '10px'}}>{error}</div>}
-      <form onSubmit={handleUpdate}>
-        <div>
-          <label>Stock Mínimo del Producto</label>
+    <div className="edit-product-container">
+      {error && <div className="error-message">{error}</div>}
+      <form className="edit-product-form" onSubmit={handleUpdate}>
+        <div className="form-group">
+          <label>Stock Mínimo</label>
           <input
-            className="input"
             type="number"
             value={minStock}
             onChange={(e) => setMinStock(e.target.value)}
@@ -115,10 +111,9 @@ const EditAmount: React.FC<Props> = ({ productos, refresh }) => {
           />
         </div>
 
-        <div>
-          <label>Stock Máximo del Producto</label>
+        <div className="form-group">
+          <label>Stock Máximo</label>
           <input
-            className="input"
             type="number"
             value={maxStock}
             onChange={(e) => setMaxStock(e.target.value)}
@@ -127,10 +122,9 @@ const EditAmount: React.FC<Props> = ({ productos, refresh }) => {
           />
         </div>
 
-        <div>
-          <label>Stock Actual del Producto</label>
+        <div className="form-group">
+          <label>Stock Actual</label>
           <input
-            className="input"
             type="number"
             value={stockAmount}
             onChange={(e) => setStockAmount(e.target.value)}
@@ -140,16 +134,20 @@ const EditAmount: React.FC<Props> = ({ productos, refresh }) => {
           />
         </div>
 
-        <div>
-          <button className="button" type="submit" disabled={isLoading}>
-            {isLoading ? 'Guardando...' : 'Guardar'}
+        <div className="button-group">
+          <button className="save-button" type="submit" disabled={isLoading}>
+            {isLoading ? (
+              <>
+                <span className="spinner"></span>
+                Guardando...
+              </>
+            ) : 'Guardar'}
           </button>
           <button 
-            className="button_close" 
+            className="cancel-button" 
             type="button"
             onClick={() => {
               setEditMode(false);
-              setNombre(productos.nameProduct);
               setMaxStock(productos.maxStockProduct);
               setMinStock(productos.minStockProduct);
               setStockAmount(productos.stockProduct);

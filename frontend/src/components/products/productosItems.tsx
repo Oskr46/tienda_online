@@ -1,5 +1,5 @@
 import React from "react"
-import "../../styles/products.css"
+import "../../styles/vistaProducts.css"
 
 interface Product {
   idProduct: number;
@@ -23,11 +23,9 @@ const ProductosItem: React.FC<ProductosItemProps> = ({ product, onSelect }) => {
         className="imagen" 
         src={`http://localhost:3002${product.urlImg}`} 
         alt={product.nameProduct} 
-        width={260} 
-        height={260}
       />
-      <h3>{product.nameProduct}</h3>
-      <p>{product.priceProduct}</p>
+      <h3>Nombre: {product.nameProduct}</h3>
+      <p>Precio: {product.priceProduct}</p>
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "../../styles/login.css";
+import "../../styles/deleteproduct.css";
 
 interface Props {
   idUser: number;
@@ -12,7 +12,7 @@ const DeleteUser: React.FC<Props> = ({ idUser, refresh }) => {
 
   const handleDelete = async () => {
     const confirmDelete = window.confirm("¿Estás seguro de que deseas eliminar este usuario?");
-    if (!confirmDelete){return;}
+    if (!confirmDelete) return;
 
     setIsDeleting(true);
     setError(null);
@@ -36,16 +36,21 @@ const DeleteUser: React.FC<Props> = ({ idUser, refresh }) => {
   };
 
   return (
-    <>
+    <div className="delete-container">
       <button 
         className="button_finish" 
         onClick={handleDelete}
         disabled={isDeleting}
       >
-        {isDeleting ? 'Eliminando...' : 'Eliminar'}
+        {isDeleting ? (
+          <>
+            <span className="delete-spinner"></span>
+            Eliminando...
+          </>
+        ) : 'Eliminar'}
       </button>
       {error && <div className="error-message">{error}</div>}
-    </>
+    </div>
   );
 };
 
