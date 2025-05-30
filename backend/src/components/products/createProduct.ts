@@ -10,10 +10,10 @@ export const createProduct = async (req: Request, res: Response) => {
     }
 
     // Los campos del formulario vienen en req.body
-    const { name, price, maxStockProduct, minStockProduct, stockProduct } = req.body;
+    const { name, price } = req.body;
 
     // Validar que todos los campos requeridos están presentes
-    if (!name || !price || !maxStockProduct || !minStockProduct || !stockProduct) {
+    if (!name || !price) {
         // Eliminar archivo subido si la validación falla
         fs.unlinkSync(req.file.path);
         return res.status(400).json({ error: 'Todos los campos son requeridos' });
@@ -35,41 +35,24 @@ export const createProduct = async (req: Request, res: Response) => {
 
         // Convertir y validar datos numéricos
         const priceNumber = parseFloat(price);
-        const maxStock = parseInt(maxStockProduct);
-        const minStock = parseInt(minStockProduct);
-        const currentStock = parseInt(stockProduct);
 
-        if (isNaN(priceNumber) || isNaN(maxStock) || isNaN(minStock) || isNaN(currentStock)) {
+        if (isNaN(priceNumber)) {
             fs.unlinkSync(path.join(path.dirname(req.file.path), finalFilename));
             return res.status(400).json({ error: 'Datos numéricos inválidos' });
-        }
-
-        // Validar que el stock actual esté entre mínimo y máximo
-        if (currentStock < minStock || currentStock > maxStock) {
-            fs.unlinkSync(path.join(path.dirname(req.file.path), finalFilename));
-            return res.status(400).json({ 
-                error: `El stock actual debe estar entre ${minStock} y ${maxStock}` 
-            });
         }
 
         const query = `
             INSERT INTO public.products (
                 "nameProduct", 
                 "priceProduct", 
-                "maxStockProduct", 
-                "minStockProduct", 
-                "stockProduct", 
                 "urlImg"
-            ) VALUES ($1, $2, $3, $4, $5, $6) 
+            ) VALUES ($1, $2, $3) 
             RETURNING *
         `;
 
         const result = await pool.query(query, [
             name,
             priceNumber,
-            maxStock,
-            minStock,
-            currentStock,
             imageUrl
         ]);
 

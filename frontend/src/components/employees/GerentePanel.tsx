@@ -57,7 +57,7 @@ function GerentePanel(){
            <div>
              {!modalState && <h2>Panel de Gerente</h2>}
             <div className="options">
-              <h2>Elija una de las siguientes opciones:</h2>
+              {!modalState && <h2>Elija una de las siguientes opciones:</h2>}
               {!modalState && !EditAmount && <button className="button" onClick={abrirEditAmount}>Gestionar Inventario de Producto</button>}
               {!modalState && !vistaAddProd && <button className="button" onClick={abrirVistaAdd}>Agregar Producto</button>}
               {!modalState && !vistaProd && <button className="button" onClick={abrirVistaProd}>Ver Productos</button>}

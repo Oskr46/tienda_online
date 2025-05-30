@@ -12,11 +12,10 @@ const AddUser: React.FC = () => {
 
     const checkUserExists = async (username: string) => {
         try {
-            const response = await fetch(`http://localhost:3002/api/user/check/${username}`);
+            const response = await fetch(`http://localhost:3002/api/user/data/${username}`);
             const data = await response.json();
             return data.exists;
         } catch (error) {
-            console.error('Error al verificar usuario:', error);
             return false;
         }
     };

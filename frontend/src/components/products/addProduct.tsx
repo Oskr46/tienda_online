@@ -4,9 +4,6 @@ import '../../styles/login.css'
 const AddProduct: React.FC = () => {
     const [name, setName] = useState('');
     const [price, setPrice] = useState('');
-    const [maxStockProduct, setMaxStockProduct] = useState('');
-    const [minStockProduct, setMinStockProduct] = useState('');
-    const [stockProduct, setStockProduct] = useState('');
     const [imageFile, setImageFile] = useState<File | null>(null);
     const [imagePreview, setImagePreview] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -36,9 +33,6 @@ const AddProduct: React.FC = () => {
         const formData = new FormData();
         formData.append('name', name);
         formData.append('price', price);
-        formData.append('maxStockProduct', maxStockProduct);
-        formData.append('minStockProduct', minStockProduct);
-        formData.append('stockProduct', stockProduct);
         
         if (imageFile) {
             formData.append('image', imageFile);
@@ -61,9 +55,6 @@ const AddProduct: React.FC = () => {
         // Resetear formulario
         setName('');
         setPrice('');
-        setMinStockProduct('');
-        setMaxStockProduct('');
-        setStockProduct('');
         setImageFile(null);
         setImagePreview('');
         
@@ -99,39 +90,6 @@ const AddProduct: React.FC = () => {
                         value={price} 
                         placeholder="Ingrese el precio del producto" 
                         onChange={(e) => setPrice(e.target.value)} 
-                        required
-                    /><br />
-
-                    <label>Máximo de Stock del Producto</label>
-                    <input 
-                        className="input" 
-                        type="number" 
-                        min={0} 
-                        value={maxStockProduct} 
-                        placeholder="Ingrese el máximo de stock" 
-                        onChange={(e) => setMaxStockProduct(e.target.value)} 
-                        required
-                    /><br />
-                    
-                    <label>Mínimo de Stock del Producto</label>
-                    <input 
-                        className="input" 
-                        type="number" 
-                        min={0} 
-                        value={minStockProduct} 
-                        placeholder="Ingrese el mínimo de stock" 
-                        onChange={(e) => setMinStockProduct(e.target.value)} 
-                        required
-                    /><br />
-
-                    <label>Stock actual del Producto</label>
-                    <input 
-                        className="input" 
-                        type="number" 
-                        min={0} 
-                        value={stockProduct} 
-                        placeholder="Ingrese el stock actual" 
-                        onChange={(e) => setStockProduct(e.target.value)} 
                         required
                     /><br />
                     

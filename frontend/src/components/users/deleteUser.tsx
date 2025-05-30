@@ -12,7 +12,7 @@ const DeleteUser: React.FC<Props> = ({ idUser, refresh }) => {
 
   const handleDelete = async () => {
     const confirmDelete = window.confirm("¿Estás seguro de que deseas eliminar este usuario?");
-    if (!confirmDelete) return;
+    if (!confirmDelete){return;}
 
     setIsDeleting(true);
     setError(null);

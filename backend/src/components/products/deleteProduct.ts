@@ -3,10 +3,9 @@ import pool from "../../conn"
 
 export const deleteProduct = async(req: Request, res: Response) =>{
     const { id } = req.params;
-    const campoID = id.trim();
     try{
         const query = `DELETE from "public"."products" WHERE "idProduct" = $1 RETURNING *`;
-        const result = await pool.query(query, [campoID])
+        const result = await pool.query(query, [id])
 
         if(result.rows.length === 0){
             res.json({success: false, message: `ERROR: No se encontraron coincidencias`})

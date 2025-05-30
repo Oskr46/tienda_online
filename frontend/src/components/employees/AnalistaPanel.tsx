@@ -34,7 +34,7 @@ const cerrarBandeja =() =>{
         <>
           {!modalState && <h2>Panel de Gerente</h2>}
           <div className="options">
-            <h2>Elija una de las siguientes opciones:</h2>
+            {!modalState && <h2>Elija una de las siguientes opciones:</h2>}
             {!modalState && !editAmount && <button onClick= {abrirEditAmount} className="button">Gestionar Inventario de Producto</button>}
             {!modalState && !bandeja && <button onClick= {abrirBandeja} className="button">Bandeja de Entrada</button>}
           </div>

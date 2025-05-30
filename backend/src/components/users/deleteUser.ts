@@ -2,12 +2,10 @@ import { Request, Response } from "express";
 import pool from "../../conn"
 
 export const deleteUser = async(req: Request, res: Response) =>{
-    const { username } = req.params;
-    const campoUsername = username.trim();
-    console.log(username);
+    const { idUser } = req.params;
     try{
-        const query = `DELETE from "public"."user" WHERE "userName" = $1 RETURNING *`;
-        const result = await pool.query(query, [campoUsername])
+        const query = `DELETE from "public"."user" WHERE "idUser" = $1 RETURNING *`;
+        const result = await pool.query(query, [idUser])
 
         if(result.rows.length === 0){
             res.json({success: false, message: `ERROR: No se encontraron coincidencias`})

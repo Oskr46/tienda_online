@@ -11,9 +11,9 @@ interface Product {
   minStockProduct: string;
   stockProduct: string;
   urlImg: string;
+  originalImgUrl?: string;
 }
 
-// Estilos para el PDF
 const pdfStyles = StyleSheet.create({
   page: {
     padding: 30,
@@ -102,10 +102,8 @@ const pdfStyles = StyleSheet.create({
   }
 });
 
-// Función para obtener imágenes con manejo de CORS
 const fetchImage = async (url: string): Promise<string> => {
   try {
-    // Si ya es una imagen en base64, retornarla directamente
     if (url.startsWith('data:image')) return url;
     
     const fullUrl = url.startsWith('http') ? url : `http://localhost:3002${url}`;
@@ -125,14 +123,15 @@ const fetchImage = async (url: string): Promise<string> => {
     });
   } catch (error) {
     console.error('Error loading image:', error);
-    return ''; // Retorna cadena vacía si falla
+    return '';
   }
-};
+};;
 
 const ProductsPDFDocument = ({ products }: { products: Product[] }) => (
   <Document>
     <Page style={pdfStyles.page} size="A4">
       <View style={pdfStyles.header}>
+        <Text style={pdfStyles.title}>LECTROMART C.A</Text>
         <Text style={pdfStyles.title}>REPORTE DE PRODUCTOS</Text>
         <Text style={pdfStyles.subtitle}>Inventario del Sistema</Text>
       </View>
@@ -206,6 +205,8 @@ const ProductTable: React.FC = () => {
   const fetchProducts = async () => {
     try {
       setLoading(true);
+      setError(null);
+      
       const response = await fetch('http://localhost:3002/api/product/data', {
         credentials: 'include'
       });
@@ -215,18 +216,42 @@ const ProductTable: React.FC = () => {
       }
       
       const data = await response.json();
-      const productsData = data.data || data;
       
-      // Precargar imágenes como base64 para el PDF
+      // Aseguramos que productsData sea siempre un array
+      let productsData = [];
+      if (Array.isArray(data)) {
+        productsData = data;
+      } else if (data.data && Array.isArray(data.data)) {
+        productsData = data.data;
+      } else if (data && typeof data === 'object' && !Array.isArray(data)) {
+        // Si es un objeto único, lo convertimos a array
+        productsData = [data];
+      }
+      
+      // Si no hay productos después de la normalización
+      if (productsData.length === 0) {
+        setProducts([]);
+        return;
+      }
+      
+      // Precargar imágenes
       const productsWithImages = await Promise.all(
         productsData.map(async (product: Product) => {
-          const imageBase64 = await fetchImage(product.urlImg);
-          return {
-            ...product,
-            // Mantener ambas versiones: base64 para PDF y URL normal para la tabla
-            urlImg: imageBase64,
-            originalImgUrl: product.urlImg // Guardamos la URL original
-          };
+          try {
+            const imageBase64 = product.urlImg ? await fetchImage(product.urlImg) : '';
+            return {
+              ...product,
+              urlImg: imageBase64,
+              originalImgUrl: product.urlImg
+            };
+          } catch (error) {
+            console.error('Error procesando imagen del producto:', error);
+            return {
+              ...product,
+              urlImg: '',
+              originalImgUrl: product.urlImg
+            };
+          }
         })
       );
       
@@ -255,8 +280,8 @@ const ProductTable: React.FC = () => {
     return <div style={{ padding: 20, textAlign: 'center', color: '#ff6b6b' }}>Error: {error}</div>;
   }
 
-  if (products.length === 0) {
-    return <div style={{ padding: 20, textAlign: 'center', color: '#a0a0a0' }}>No hay productos registrados</div>;
+  if (!products || products.length === 0) {
+    return <div style={{ padding: 20, textAlign: 'center', color: '#a0a0a0' }}>No hay productos registrados en la base de datos</div>;
   }
 
   return (
@@ -280,11 +305,7 @@ const ProductTable: React.FC = () => {
                 transition: 'all 0.3s ease',
                 display: 'flex',
                 alignItems: 'center',
-                gap: '8px',
-                ':hover': {
-                  borderColor: '#4d9eff',
-                  boxShadow: '0 0 8px rgba(77, 158, 255, 0.5)'
-                }
+                gap: '8px'
               }}
               disabled={loading}
             >
@@ -315,18 +336,20 @@ const ProductTable: React.FC = () => {
               <td style={{ padding: 12, color: '#ffffff' }}>{product.nameProduct}</td>
               <td style={{ padding: 12, color: '#ffffff' }}>${product.priceProduct}</td>
               <td style={{ padding: 12 }}>
-                <img 
-                  src={`http://localhost:3002${product.originalImgUrl || product.urlImg}`}
-                  width={60} 
-                  height={60} 
-                  style={{ border: '1px solid #333333' }}
-                  alt={product.nameProduct}
-                  crossOrigin="anonymous"
-                  onError={(e) => {
-                    const target = e.target as HTMLImageElement;
-                    target.style.display = 'none';
-                  }}
-                />
+                {product.originalImgUrl && (
+                  <img 
+                    src={`http://localhost:3002${product.originalImgUrl}`}
+                    width={60} 
+                    height={60} 
+                    style={{ border: '1px solid #333333' }}
+                    alt={product.nameProduct}
+                    crossOrigin="anonymous"
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.style.display = 'none';
+                    }}
+                  />
+                )}
               </td>
               <td style={{ padding: 12, display: 'flex', gap: 8 }}>
                 <EditProduct productos={product} refresh={refreshProducts} />

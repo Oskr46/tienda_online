@@ -13,6 +13,6 @@ router.post('/data', createUser);
 router.post('/data/login', logUser);
 router.get('/data/:username', verifyUser);
 router.put('/data/:username', updateUser);
-router.delete('/data/:username', deleteUser);
+router.delete('/data/:idUser', deleteUser);
 
 export default router;

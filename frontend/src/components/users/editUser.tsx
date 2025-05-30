@@ -15,16 +15,17 @@ interface Props {
 
 const EditUser: React.FC<Props> = ({ user, refresh }) => {
   const [fullName, setFullName] = useState(user.fullNameUser);
-  const [username, setUsername] = useState(user.userName);
   const [userType, setUserType] = useState(user.typeUser.toString());
   const [editMode, setEditMode] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
+  
+
   const handleUpdate = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!fullName || !username || !userType) {
+    if (!fullName || !userType) {
       setError('Todos los campos son obligatorios');
       return;
     }
@@ -33,14 +34,13 @@ const EditUser: React.FC<Props> = ({ user, refresh }) => {
     setError("");
 
     try {
-      const response = await fetch(`http://localhost:3002/api/user/data/${user.idUser}`, {
+      const response = await fetch(`http://localhost:3002/api/user/data/${user.userName}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           fullNameUser: fullName,
-          userName: username,
           typeUser: Number(userType)
         })
       });
@@ -79,17 +79,6 @@ const EditUser: React.FC<Props> = ({ user, refresh }) => {
             type="text"
             value={fullName}
             onChange={(e) => setFullName(e.target.value)}
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label>Nombre de Usuario</label>
-          <input
-            className="input"
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
             required
           />
         </div>

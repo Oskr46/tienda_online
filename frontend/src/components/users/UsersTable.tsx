@@ -124,14 +124,30 @@ const UserTable: React.FC = () => {
   const fetchUsers = async () => {
     try {
       setLoading(true);
-      const response = await fetch('http://localhost:3002/api/user/data');
+      setError(null);
+      
+      const response = await fetch('http://localhost:3002/api/user/data', {
+        credentials: 'include'
+      });
       
       if (!response.ok) {
         throw new Error(`Error HTTP! estado: ${response.status}`);
       }
       
       const data = await response.json();
-      setUsers(data.data || data);
+      
+      // Aseguramos que usersData sea siempre un array
+      let usersData = [];
+      if (Array.isArray(data)) {
+        usersData = data;
+      } else if (data.data && Array.isArray(data.data)) {
+        usersData = data.data;
+      } else if (data && typeof data === 'object' && !Array.isArray(data)) {
+        // Si es un objeto único, lo convertimos a array
+        usersData = [data];
+      }
+      
+      setUsers(usersData);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Error desconocido');
       console.error('Error al cargar usuarios:', err);
@@ -156,8 +172,8 @@ const UserTable: React.FC = () => {
     return <div style={{ padding: 20, textAlign: 'center', color: '#ff6b6b' }}>Error: {error}</div>;
   }
 
-  if (users.length === 0) {
-    return <div style={{ padding: 20, textAlign: 'center', color: '#a0a0a0' }}>No hay usuarios registrados</div>;
+  if (!users || users.length === 0) {
+    return <div style={{ padding: 20, textAlign: 'center', color: '#a0a0a0' }}>No hay usuarios registrados en la base de datos</div>;
   }
 
   return (
@@ -167,7 +183,7 @@ const UserTable: React.FC = () => {
           document={<UsersPDFDocument users={users} />}
           fileName={`reporte_usuarios_${new Date().toISOString().slice(0, 10)}.pdf`}
         >
-          {({ loading, error }) => (
+          {({ loading }) => (
             <button 
               style={{
                 padding: '12px 20px',
@@ -181,11 +197,7 @@ const UserTable: React.FC = () => {
                 transition: 'all 0.3s ease',
                 display: 'flex',
                 alignItems: 'center',
-                gap: '8px',
-                ':hover': {
-                  borderColor: '#4d9eff',
-                  boxShadow: '0 0 8px rgba(77, 158, 255, 0.5)'
-                }
+                gap: '8px'
               }}
               disabled={loading}
             >
