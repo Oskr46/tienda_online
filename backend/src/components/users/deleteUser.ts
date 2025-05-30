@@ -13,7 +13,7 @@ export const deleteUser = async(req: Request, res: Response) =>{
             res.json({success: false, message: `ERROR: No se encontraron coincidencias`})
         }
         else{
-            res.json({success: true,message: `Se ha eliminado el usuario`, data: result.rows[0]})
+            res.json({success: true,message: `Se ha eliminado el usuario`, data: result.rows})
         }
     }
     catch(err){
